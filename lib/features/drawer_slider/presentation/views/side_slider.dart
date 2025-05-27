@@ -2,8 +2,10 @@ import 'package:awlad_khedr/constant.dart';
 import 'package:awlad_khedr/core/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/app_router.dart';
+import '../../../auth/login/data/provider/login_provider.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});
@@ -54,11 +56,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       width: 10,
                     ),
                     CircleAvatar(
+                      radius: 30,
+                      backgroundColor: mainColor,
                       child: Image.asset(
                         AssetsData.profile,
                       ),
-                      radius: 30,
-                      backgroundColor: mainColor,
                     ),
                   ],
                 ),
@@ -67,7 +69,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   textDirection: TextDirection.rtl,
                   child: Container(
                     width: double.infinity,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(
                         Radius.circular(15),
                       ),
@@ -230,12 +232,18 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       color: Colors.black,
                     ),
                   ),
-                  title: Image.asset(
+                  trailing: Image.asset(
                     AssetsData.logout,
                     width: 15,
                     height: 15,
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    final loginProvider = Provider.of<LoginProvider>(context,listen: false);
+                    loginProvider.logout();
+
+                    GoRouter.of(context).pushReplacement(AppRouter.kLoginView);
+                    print("TOOOOkEEEEEEEN${loginProvider.token.toString()}");
+                  },
                 ),
               ),
             ],

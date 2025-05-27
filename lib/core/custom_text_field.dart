@@ -14,6 +14,7 @@ class CustomTextField extends StatelessWidget {
         this.minLines = 1,
         this.suffixIcon,
         this.outLine = false,
+        this.autofocus = false,
       });
 
   final Function(String)? onChanged;
@@ -23,6 +24,7 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController? controller;
   final bool? obscureText;
   final bool outLine;
+  final bool autofocus;
   final int? maxLines;
   final int? minLines;
   final double? radius;
@@ -32,6 +34,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofocus: autofocus,
       style: const TextStyle(color: Colors.black , ),
       maxLines: maxLines,
       cursorColor: Colors.white,

@@ -2,6 +2,7 @@ import 'package:awlad_khedr/constant.dart';
 import 'package:awlad_khedr/core/app_router.dart';
 import 'package:awlad_khedr/core/assets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class OnBoardingPage extends StatelessWidget {
@@ -23,34 +24,34 @@ class OnBoardingPage extends StatelessWidget {
               ],
             )),
             child: Padding(
-              padding: const EdgeInsets.all(22.0),
+              padding: EdgeInsets.all(22.0.r),
               child: Center(
                   child: Column(children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 50.0),
+                  padding: EdgeInsets.symmetric(vertical: 50.0.h),
                   child: Image.asset(
                     AssetsData.logoPng,
-                    width: 106,
-                    height: 116,
+                    width: 106.w,
+                    height: 116.h,
                   ),
                 ),
-                const SizedBox(
-                  height: 140,
+                 SizedBox(
+                  height: 140.h,
                 ),
-                const Center(
+                 Center(
                   child: Text(
                     'أبدأ معنا تجارتك الأن',
                     style: TextStyle(
                         color: Colors.black,
-                        fontSize: 45,
+                        fontSize: 45.sp,
                         fontFamily: 'GE Dinar One',
                         fontWeight: FontWeight.w500),
                   ),
                 ),
-                const SizedBox(
-                  height: 6,
+                 SizedBox(
+                  height: 6.h,
                 ),
-                const Text(
+                 Text(
                   'أولاد خضر للتجارة والتوزيع نحن نسعي لإرضاء عملائنا الكرام وتوفير كل إحتياجاتهم',
                   maxLines: 2,
                   textAlign: TextAlign.center,
@@ -58,7 +59,7 @@ class OnBoardingPage extends StatelessWidget {
                       color: Colors.black,
                       fontFamily: 'GE Dinar One',
                       fontWeight: FontWeight.w500,
-                      fontSize: 13),
+                      fontSize: 13.sp),
                 ),
                 const Spacer(),
                 Row(
@@ -73,11 +74,11 @@ class OnBoardingPage extends StatelessWidget {
                         onTap: () {
                           GoRouter.of(context).push(AppRouter.kLoginView);
                         },
-                        child: const Center(
+                        child: Center(
                             child: Text(
                           'الدخول',
                           style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 20.sp,
                               fontWeight: FontWeight.w600,
                               fontFamily: baseFont),
                         )),

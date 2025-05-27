@@ -1,5 +1,4 @@
-import 'package:awlad_khedr/constant.dart';
-import 'package:awlad_khedr/features/products_screen/presentation/views/widgets/counter_virtecal.dart';
+// import 'package:awlad_khedr/features/products_screen/presentation/model/items_list.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/assets.dart';
@@ -16,7 +15,8 @@ class _ProductScreenState extends State<CartItem> {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-        itemCount: 5,
+      itemCount: 5,
+        // itemCount: groceryItems.length,
         // physics: NeverScrollableScrollPhysics(),
         separatorBuilder: (BuildContext context, int index) => const SizedBox(
           height: 15,
@@ -54,12 +54,13 @@ class _ProductScreenState extends State<CartItem> {
                       ),
                       const SizedBox(width: 10),
                       // Product Information
-                      const Expanded(
+                       const Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "V Cola",
+                              'as',
+                              // groceryItems[index].name,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
@@ -67,14 +68,16 @@ class _ProductScreenState extends State<CartItem> {
                               ),
                             ),
                             Text(
-                              "شرنك = ١ * ٤",
+                              "unites",
+                              // "شرنك =${groceryItems[index].quantity}",
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.black,
                               ),
                             ),
                             Text(
-                              "EGP 100 سعر",
+                              'price',
+                              // "${groceryItems[index].price} سعر ",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
@@ -84,7 +87,7 @@ class _ProductScreenState extends State<CartItem> {
                           ],
                         ),
                       ),
-                      const CounterVertical(),
+                       // CounterVertical(index: index,item: groceryItems[index],),
                     ],
                   ),
                 ),

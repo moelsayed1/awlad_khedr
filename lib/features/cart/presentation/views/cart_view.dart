@@ -2,22 +2,23 @@ import 'package:awlad_khedr/core/main_layout.dart';
 import 'package:awlad_khedr/features/cart/presentation/views/widgets/cart_item.dart';
 import 'package:awlad_khedr/features/cart/presentation/views/widgets/custom_button_cart.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../constant.dart';
 import '../../../../core/assets.dart';
 import '../../../drawer_slider/presentation/views/side_slider.dart';
-
 class CartViewPage extends StatefulWidget {
-   CartViewPage({super.key , });
+
+   const CartViewPage({super.key , });
 
 
   @override
   State<CartViewPage> createState() => _CartViewPageState();
 }
-
 class _CartViewPageState extends State<CartViewPage> {
   @override
   Widget build(BuildContext context) {
+    double count = 3000;
+
     return MainLayout(
       selectedIndex: 1,
       child: Scaffold(
@@ -58,7 +59,7 @@ class _CartViewPageState extends State<CartViewPage> {
         body: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding:  EdgeInsets.all(16.0.r),
               child: SizedBox(
                   width: double.infinity,
                   height: MediaQuery.sizeOf(context).height * .55,
@@ -87,7 +88,7 @@ class _CartViewPageState extends State<CartViewPage> {
                   ],
                   color: Colors.white,
                 ),
-                child: Padding(
+                child:  Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -98,32 +99,31 @@ class _CartViewPageState extends State<CartViewPage> {
                           color: Colors.red,
                           fontFamily: baseFont,
                           fontWeight: FontWeight.w700,
-                          fontSize: 14,
+                          fontSize: 16,
                         ),
                       ),
                       const SizedBox(height: 20,),
-                      const Row(
+                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'EGP 4000',
-                            style: TextStyle(
+                            'EGP ${count.toInt()}',
+                            style:const TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.w400,
                               color: Colors.black,
                             ),
                           ),
-                          Text('الاجمالي',
+                         const Text('الاجمالي',
                               style: TextStyle(
                                   fontSize: 30,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black,
                                   fontFamily: baseFont)),
                         ],
                       ),
                       const Spacer(),
-
-                      CustomButtonCart(),
+                      CustomButtonCart(count: count,),
                     ],
                   ),
                 ),

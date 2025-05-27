@@ -2,16 +2,16 @@ import 'package:awlad_khedr/constant.dart';
 import 'package:awlad_khedr/core/assets.dart';
 import 'package:awlad_khedr/core/main_layout.dart';
 import 'package:awlad_khedr/features/home/presentation/views/widgets/carousel_slider.dart';
-import 'package:awlad_khedr/features/products_screen/presentation/views/widgets/products.dart';
+import 'package:awlad_khedr/features/home/presentation/views/widgets/category_home.dart';
 import 'package:awlad_khedr/features/home/presentation/views/widgets/search_widget.dart';
-import 'package:awlad_khedr/features/home/presentation/views/widgets/top_rated.dart';
+import 'package:awlad_khedr/features/most_requested/presentation/views/top_rated.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../../core/app_router.dart';
 import '../../../drawer_slider/presentation/views/side_slider.dart';
+
+
 
 class HomeScreenView extends StatefulWidget {
   const HomeScreenView({super.key});
@@ -35,7 +35,6 @@ class _HomeScreenViewState extends State<HomeScreenView> {
 
     if (!hasShownPopup) {
       _showStartupDialog();
-      // Mark the popup as shown
       await prefs.setBool('hasShownPopup', true);
     }
   }
@@ -43,12 +42,12 @@ class _HomeScreenViewState extends State<HomeScreenView> {
   void _showStartupDialog() {
     showDialog(
       context: context,
-      barrierDismissible: true, // Optional: allows dismissing by tapping outside
+      barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.transparent,
           content: Image.asset(
-            'assets/images/ads.png', // Replace with your image path
+            'assets/images/ads.png',
             width: 316,
             height: 392,
           ),
@@ -123,6 +122,39 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                         GoRouter.of(context).push(AppRouter.kMostRequestedPage);
                       },
                       child: const Text(
+                        "المزيد",
+                        style: TextStyle(
+                            color: darkOrange,
+                            fontSize: 14,
+                            fontFamily: baseFont,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                    const Text(
+                      "الأصنافً",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontFamily: baseFont,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                const Row(
+                  children: [
+                    Expanded(
+                        child: HomeCategory()),],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        GoRouter.of(context).push(AppRouter.kMostRequestedPage);
+                      },
+                      child: const Text(
                         "للمزيد",
                         style: TextStyle(
                             color: darkOrange,
@@ -142,41 +174,13 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                Row(
+                const Row(
                   children: [
                     Expanded(
-                        child: TopRatedItem(name: "متجر الالبان", rating: "4.5")),
-                  ],
+                        child: TopRatedItem()),],
                 ),
                 const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        GoRouter.of(context).push(AppRouter.kProductsScreenView);
-                      },
-                      child: const Text(
-                        "للمزيد",
-                        style: TextStyle(
-                            color: darkOrange,
-                            fontSize: 14,
-                            fontFamily: baseFont,
-                            fontWeight: FontWeight.w700),
-                      ),
-                    ),
-                    const Text(
-                      "المنتجات",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontFamily: baseFont,
-                          fontWeight: FontWeight.w700),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                const ProductItem(),
+
               ],
             ),
           ),
@@ -185,3 +189,36 @@ class _HomeScreenViewState extends State<HomeScreenView> {
     );
   }
 }
+
+
+
+
+
+// Row(
+//   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//   children: [
+//     InkWell(
+//       onTap: () {
+//         GoRouter.of(context).push(AppRouter.kProductsScreenView);
+//       },
+//       child: const Text(
+//         "للمزيد",
+//         style: TextStyle(
+//             color: darkOrange,
+//             fontSize: 14,
+//             fontFamily: baseFont,
+//             fontWeight: FontWeight.w700),
+//       ),
+//     ),
+//     const Text(
+//       "المنتجات",
+//       style: TextStyle(
+//           color: Colors.black,
+//           fontSize: 20,
+//           fontFamily: baseFont,
+//           fontWeight: FontWeight.w700),
+//     ),
+//   ],
+// ),
+// const SizedBox(height: 10),
+// const HomeProductItem(),

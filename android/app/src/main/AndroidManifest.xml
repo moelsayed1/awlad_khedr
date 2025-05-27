@@ -2,7 +2,10 @@
     <application
         android:label="awlad_khedr"
         android:name="${applicationName}"
-        android:icon="@mipmap/logo">
+        android:icon="@mipmap/logo"
+        android:enableOnBackInvokedCallback="true">
+
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

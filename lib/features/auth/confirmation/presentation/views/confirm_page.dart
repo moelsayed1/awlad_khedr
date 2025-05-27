@@ -1,7 +1,6 @@
 import 'package:awlad_khedr/constant.dart';
 import 'package:awlad_khedr/core/assets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../core/app_router.dart';
@@ -47,7 +46,7 @@ class SuccessScreen extends StatelessWidget {
               // Done button
               ElevatedButton(
                 onPressed: () {
-                  GoRouter.of(context).push(AppRouter.kHomeScreen);
+                  GoRouter.of(context).pushReplacement(AppRouter.kLoginView);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,

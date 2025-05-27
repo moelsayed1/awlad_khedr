@@ -1,3 +1,4 @@
+
 import 'package:awlad_khedr/constant.dart';
 import 'package:awlad_khedr/core/assets.dart';
 import 'package:awlad_khedr/core/custom_button.dart';
@@ -5,35 +6,41 @@ import 'package:awlad_khedr/core/custom_text_field.dart';
 import 'package:awlad_khedr/features/auth/ticket_reserve/presentation/views/widgets/custom_add_file.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../core/app_router.dart';
+import '../../../register/data/provider/register_provider.dart';
 
 class ReservationPage extends StatefulWidget {
   const ReservationPage({super.key});
 
   @override
-  State<ReservationPage> createState() => _LoginViewState();
+  State<ReservationPage> createState() => _ReservationPageState();
 }
 
-class _LoginViewState extends State<ReservationPage> {
-  bool passwordVisible = true;
+class _ReservationPageState extends State<ReservationPage> {
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _marketNameController = TextEditingController();
   bool isAgreed = false;
 
   @override
   Widget build(BuildContext context) {
+    final registerProvider = Provider.of<RegisterProvider>(context);
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
           child: Stack(
             children: [
               Positioned(
-                top: -130, // Adjust this to move the circle up/down
-                right: -70, // Adjust this to move the circle left/right
+                top: -130,
+                right: -70,
                 child: Container(
                   width: 350,
                   height: 350,
                   decoration: const BoxDecoration(
-                    color: mainColor, // Your yellow color
+                    color: mainColor,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -43,7 +50,7 @@ class _LoginViewState extends State<ReservationPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    const SizedBox(height: 80), // Space at the top
+                    const SizedBox(height: 80),
                     InkWell(
                       onTap: () {
                         GoRouter.of(context).pop();
@@ -96,8 +103,9 @@ class _LoginViewState extends State<ReservationPage> {
                     const SizedBox(
                       height: 14,
                     ),
-                    const CustomTextField(
-                      hintText: '01022558665',
+                    CustomTextField(
+                      controller: _phoneController,
+                      hintText: '0102******',
                       inputType: TextInputType.number,
                     ),
                     const SizedBox(
@@ -114,7 +122,8 @@ class _LoginViewState extends State<ReservationPage> {
                     const SizedBox(
                       height: 14,
                     ),
-                    const CustomTextField(
+                    CustomTextField(
+                      controller: _addressController,
                       hintText: '',
                     ),
                     const SizedBox(
@@ -131,11 +140,31 @@ class _LoginViewState extends State<ReservationPage> {
                     const SizedBox(
                       height: 14,
                     ),
-                    const CustomTextField(
+                    CustomTextField(
+                      controller: _marketNameController,
                       hintText: '',
                     ),
                     const SizedBox(
                       height: 14,
+                    ),
+                    const Text(
+                      'صورة الماركت',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                          color: Colors.black,
+                          fontFamily: baseFont),
+                    ),
+                    const SizedBox(
+                      height: 14,
+                    ),
+                    CustomAddFile(
+                      onFilePicked: (file) {
+                        registerProvider.saveFiles(marketImage: file);
+                      },
+                    ),
+                    const SizedBox(
+                      height: 22,
                     ),
                     const Text(
                       'سجل التجاري',
@@ -145,23 +174,34 @@ class _LoginViewState extends State<ReservationPage> {
                           color: Colors.black,
                           fontFamily: baseFont),
                     ),
-                   const SizedBox(
+                    const SizedBox(
                       height: 14,
                     ),
-                    const CustomAddFile(),
+                    CustomAddFile(
+                      onFilePicked: (file) {
+                        registerProvider.saveFiles(commercialRegister: file);
+                      },
+                    ),
                     const SizedBox(
                       height: 22,
                     ),
-                    const Text('بطاقة ضربيبة',
-                        style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                        color: Colors.black,
-                        fontFamily: baseFont),),
+                    const Text(
+                      'بطاقة ضربيبة',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                          color: Colors.black,
+                          fontFamily: baseFont),
+                    ),
                     const SizedBox(
                       height: 14,
                     ),
-                    const CustomAddFile(),
+                    CustomAddFile(
+                      onFilePicked: (file) {
+                        registerProvider.saveFiles(taxCard: file);
+                      },
+                    ),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -187,12 +227,27 @@ class _LoginViewState extends State<ReservationPage> {
                     ),
                     Center(
                       child: CustomButton(
-                          onTap: () {
-                            if(isAgreed == true) {
-                              GoRouter.of(context).push(
-                                  AppRouter.kSuccessScreen);
-                            }
-                          },
+                          onTap: isAgreed
+                              ? () async {
+                                  await registerProvider.register({
+                                    "mobile": _phoneController.text.trim(),
+                                    "address_line_1":
+                                        _addressController.text.trim(),
+                                    "supplier_business_name":
+                                        _marketNameController.text.trim(),
+                                  });
+                                  if (registerProvider.message != null) {
+                                    GoRouter.of(context)
+                                        .push(AppRouter.kSuccessScreen);
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content:
+                                              Text(registerProvider.message!)),
+                                    );
+                                  }
+                                }
+                              : null,
                           text: 'انتهاء',
                           width: 202,
                           height: 60,

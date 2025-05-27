@@ -1,26 +1,52 @@
+import 'dart:convert';
+
 import 'package:awlad_khedr/core/assets.dart';
+import 'package:awlad_khedr/features/most_requested/data/model/top_rated_model.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../constant.dart';
+import '../../../../constant.dart';
+import 'package:http/http.dart' as http;
+
+import '../../../../main.dart';
 
 class TopRatedItem extends StatefulWidget {
-  TopRatedItem({super.key, required this.name, required this.rating});
-
-  String name;
-  String rating;
+  const TopRatedItem({super.key,});
 
   @override
   State<TopRatedItem> createState() => _TopRatedItemState();
 }
 
 class _TopRatedItemState extends State<TopRatedItem> {
+  TopRatedModel? topRatedItem;
+  bool isListLoaded = false;
+  GetTopRatedItems() async {
+    Uri uriToSend = Uri.parse(APIConstant.GET_TOP_RATED_ITEMS);
+    final response = await http.get(uriToSend, headers: {"Authorization" : "Bearer $authToken"});
+    if (response.statusCode == 200) {
+      topRatedItem = TopRatedModel.fromJson(jsonDecode(response.body));
+    }
+    // if (topRatedItem!.products.isEmpty && topRatedItem!.products.isNotEmpty) {
+    setState(() {
+      isListLoaded = true;
+    });
+  // }
+    }
+  @override
+  void initState() {
+    // TODO: implement initState
+    GetTopRatedItems();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       height: 200,
-      child: ListView.separated(
-        itemCount: 5,
+      child:
+      isListLoaded ?
+      ListView.separated(
+        itemCount: topRatedItem!.products.length ,
+        // itemCount: 3,
         separatorBuilder: (BuildContext context, int index) => const SizedBox(
           width: 15,
         ),
@@ -42,7 +68,7 @@ class _TopRatedItemState extends State<TopRatedItem> {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 1,
                     blurRadius: 2,
-                    offset: Offset(0, 3),
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
@@ -53,8 +79,12 @@ class _TopRatedItemState extends State<TopRatedItem> {
                     width: double.infinity,
                     height: MediaQuery.sizeOf(context).height * .15,
                     color: Colors.transparent,
-                    child: Image.asset(
-                      AssetsData.carousel,
+                    child: topRatedItem!.products[index].imageUrl != null
+                        ? Image.network(
+                      topRatedItem!.products[index].imageUrl!,
+                      fit: BoxFit.cover,
+                    )
+                        : Image.asset( AssetsData.callCenter,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -63,16 +93,16 @@ class _TopRatedItemState extends State<TopRatedItem> {
                     children: [
                       const Icon(Icons.star, color: Colors.orange, size: 16),
                       const SizedBox(width: 4),
-                      Text(
-                        widget.rating,
-                        style: const TextStyle(
+                     const Text(
+                        '4.5',
+                        style:  TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Text(
-                        widget.name,
+                          topRatedItem!.products[index].productName!,
                         style: const TextStyle(color: Colors.black, fontSize: 14 , fontWeight: FontWeight.bold,fontFamily: baseFont),
                       ),
                     ],
@@ -83,7 +113,8 @@ class _TopRatedItemState extends State<TopRatedItem> {
             ),
           );
         },
-      ),
+      )
+          : const Center(child: CircularProgressIndicator(),)
     );
   }
 }

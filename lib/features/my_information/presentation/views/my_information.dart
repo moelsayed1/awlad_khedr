@@ -2,14 +2,12 @@ import 'package:awlad_khedr/core/custom_text_field.dart';
 import 'package:awlad_khedr/core/main_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../../constant.dart';
 import '../../../../core/assets.dart';
 import '../../../../core/custom_button.dart';
 
 class MyInformation extends StatelessWidget {
   const MyInformation({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MainLayout(
@@ -44,13 +42,13 @@ class MyInformation extends StatelessWidget {
             )
           ],
         ),
-        body:  Padding(
-          padding:  const EdgeInsets.all(18.0),
+        body:  const Padding(
+          padding:  EdgeInsets.all(18.0),
           child:  SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                const Text('الاسم'
+                Text('الاسم'
                 ,style: TextStyle(
                     fontSize: 18,
                     fontFamily: baseFont,
@@ -58,65 +56,65 @@ class MyInformation extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                const SizedBox(height: 8,),
-                const CustomTextField(
+                SizedBox(height: 8,),
+                CustomTextField(
                   hintText: 'محمد عبدالعالي',
                  prefixIcon: Icon(Icons.edit),
                   radius: 10,
                 ),
-                const SizedBox(height: 16,),
-                const Text('رقم التليفون',style: TextStyle(
+                SizedBox(height: 16,),
+                Text('رقم التليفون',style: TextStyle(
                   fontSize: 18,
                   fontFamily: baseFont,
                   fontWeight: FontWeight.w700,
                   color: Colors.black,
                 ),),
-                const SizedBox(height: 8,),
-                const CustomTextField(
+                SizedBox(height: 8,),
+                CustomTextField(
                   hintText: '+20 010 16 087 103',
                   prefixIcon: Icon(Icons.edit),
                   radius: 10,
                 ),
-                const SizedBox(height: 16,),
-                const Text('البريد الالكتروني',style: TextStyle(
+                SizedBox(height: 16,),
+                Text('البريد الالكتروني',style: TextStyle(
                   fontSize: 18,
                   fontFamily: baseFont,
                   fontWeight: FontWeight.w700,
                   color: Colors.black,
                 ),),
-                const SizedBox(height: 8,),
-                const CustomTextField(
+                SizedBox(height: 8,),
+                CustomTextField(
                   hintText: 'ashfaksayem@gmail.com',
                   prefixIcon: Icon(Icons.edit),
                   radius: 10,
                 ),
-                const SizedBox(height: 16,),
-                const Text('عنوان الماركت',style: TextStyle(
+                SizedBox(height: 16,),
+                Text('عنوان الماركت',style: TextStyle(
                   fontSize: 18,
                   fontFamily: baseFont,
                   fontWeight: FontWeight.w700,
                   color: Colors.black,
                 ),),
-                const SizedBox(height: 8,),
-                const CustomTextField(
+                SizedBox(height: 8,),
+                CustomTextField(
                   hintText: '------------',
                   prefixIcon: Icon(Icons.edit),
                   radius: 10,
                 ),
-                const SizedBox(height: 16,),
-                const Text('اسم الماركت',style: TextStyle(
+                SizedBox(height: 16,),
+                Text('اسم الماركت',style: TextStyle(
                   fontSize: 18,
                   fontFamily: baseFont,
                   fontWeight: FontWeight.w700,
                   color: Colors.black,
                 ),),
-                const SizedBox(height: 8,),
-                const CustomTextField(
+                SizedBox(height: 8,),
+                CustomTextField(
                   hintText: '-----------------',
                   prefixIcon: Icon(Icons.edit),
                   radius: 10,
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 40,
                 ),
                 Center(
@@ -129,7 +127,7 @@ class MyInformation extends StatelessWidget {
                     height:40 ,
                   ),
                 ),
-               const SizedBox(height: 8,),
+                SizedBox(height: 8,),
                 Center(
                   child: CustomButton(
                     text:'خروج' ,

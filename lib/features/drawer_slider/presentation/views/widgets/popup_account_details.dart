@@ -2,7 +2,7 @@ import 'package:awlad_khedr/constant.dart';
 import 'package:flutter/material.dart';
 
 class OrderDetailsButton extends StatelessWidget {
-  const OrderDetailsButton({Key? key}) : super(key: key);
+  const OrderDetailsButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class OrderDetailsButton extends StatelessWidget {
         height: 44,
         child: ElevatedButton(
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
+            backgroundColor: WidgetStateProperty.all(
                 blueHawai.withOpacity(0.5)),
           ),
           onPressed: () {

@@ -5,9 +5,9 @@ import 'package:awlad_khedr/features/notification/presentaion/views/notification
 import 'package:awlad_khedr/features/home/presentation/views/home_view.dart';
 import 'package:awlad_khedr/features/onboarding/presentation/views/on_boarding.dart';
 import 'package:awlad_khedr/features/products_screen/presentation/views/products_screen_view.dart';
+import 'package:awlad_khedr/main.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 import '../features/auth/confirmation/presentation/views/confirm_page.dart';
 import '../features/auth/forget_password/presentation/views/confirmation_view.dart';
 import '../features/auth/forget_password/presentation/views/forget_password_view.dart';
@@ -18,11 +18,11 @@ import '../features/cart/presentation/views/cart_view.dart';
 import '../features/drawer_slider/presentation/views/widgets/my_accounts.dart';
 import '../features/most_requested/presentation/views/most_requested_views.dart';
 import '../features/order/presentation/views/orders_view.dart';
-import '../features/products_screen/presentation/views/widgets/products.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 abstract class AppRouter {
+  static const kOnBoarding = '/onBoarding';
   static const kLoginView = '/loginView';
   static const kRegisterView = '/registerView';
   static const kReservationPage = '/reservationPage';
@@ -40,9 +40,12 @@ abstract class AppRouter {
   static const kConfirmationPage = '/confirmationPage';
   static const kVerificationScreen = '/verificationScreen';
 
-  static final router = GoRouter(navigatorKey: _rootNavigatorKey, routes: [
+  static final router = GoRouter(
+      initialLocation: authToken.isEmpty ? kOnBoarding : kHomeScreen,
+      navigatorKey: _rootNavigatorKey, routes: [
+
     GoRoute(
-      path: '/',
+      path: kOnBoarding,
       builder: (context, state) => const OnBoardingPage(),
     ),
     GoRoute(
@@ -73,7 +76,6 @@ abstract class AppRouter {
       builder: (context, state) => const MyInformation(),
     ),
     GoRoute(
-
       path: kMyAccounts,
       builder: (context, state) => const MyAccounts(),
     ),
@@ -92,7 +94,7 @@ abstract class AppRouter {
     ),
     GoRoute(
       path: kCartViewPage,
-      builder: (context, state) =>  CartViewPage(),
+      builder: (context, state) =>  const CartViewPage(),
     ),
     GoRoute(
       path: kOrdersViewPage,

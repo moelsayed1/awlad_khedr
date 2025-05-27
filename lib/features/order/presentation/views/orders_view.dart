@@ -214,7 +214,7 @@ class OrderCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 12),
-                SizedBox(
+                const SizedBox(
                   width: double.infinity,
                   child: CustomButtonReceipt()),
               ],

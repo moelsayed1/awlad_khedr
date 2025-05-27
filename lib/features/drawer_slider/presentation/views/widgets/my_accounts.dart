@@ -1,4 +1,3 @@
-import 'package:awlad_khedr/core/custom_button.dart';
 import 'package:awlad_khedr/features/drawer_slider/presentation/views/widgets/accounts_details_item.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -195,7 +194,7 @@ class MyAccounts extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Divider(
+                        Divider(
                         thickness: .5,
                         color: Colors.white,
                         endIndent: 20,

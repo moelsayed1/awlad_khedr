@@ -12,7 +12,7 @@ class CustomButtonReceipt extends StatelessWidget {
         height: 44,
         child: ElevatedButton(
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(mainColor),
+            backgroundColor: WidgetStateProperty.all(mainColor),
           ),
           onPressed: () {
             showDialog(

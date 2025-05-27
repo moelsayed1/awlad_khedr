@@ -1,12 +1,10 @@
-import 'dart:ffi';
-
 import 'package:awlad_khedr/constant.dart';
 import 'package:flutter/material.dart';
-
 import '../../../../../core/assets.dart';
 
 class CustomButtonCart extends StatefulWidget {
-   CustomButtonCart({super.key ,});
+   CustomButtonCart({super.key , required this.count});
+   double count ;
   @override
   State<CustomButtonCart> createState() => _CustomButtonCartState();
 }
@@ -14,17 +12,17 @@ class CustomButtonCart extends StatefulWidget {
 class _CustomButtonCartState extends State<CustomButtonCart> {
   @override
   Widget build(BuildContext context) {
-    double count = 4000;
+    // double count = 3000;
     return Center(
       child: SizedBox(
         width: double.infinity,
         height: 45,
         child: ElevatedButton(
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(mainColor),
+            backgroundColor: WidgetStateProperty.all(mainColor),
           ),
           onPressed: () {
-            if (count >= 3000) {
+            if (widget.count >= 3000) {
               setState(
                 () => showDialog<String>(
                   context: context,
@@ -53,7 +51,7 @@ class _CustomButtonCartState extends State<CustomButtonCart> {
                   backgroundColor: darkOrange,
                   content: Text(
                     textAlign: TextAlign.center,
-                    'الحد الادني الاوردر 3000 جنيه لاستكمال الطلب',
+                    'الحد الادني للاوردر 3000 جنيه لاستكمال الطلب',
                     style: TextStyle(color: Colors.black , fontWeight: FontWeight.w700),
                   ),
                 ),

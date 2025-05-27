@@ -1,7 +1,7 @@
 import 'package:awlad_khedr/constant.dart';
 import 'package:flutter/material.dart';
 class CustomButton extends StatelessWidget {
-  CustomButton(
+  const CustomButton(
       {super.key,
         this.onTap,
         required this.text,

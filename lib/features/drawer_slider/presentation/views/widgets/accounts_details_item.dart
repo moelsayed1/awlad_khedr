@@ -1,6 +1,5 @@
 import 'package:awlad_khedr/features/drawer_slider/presentation/views/widgets/popup_account_details.dart';
 import 'package:flutter/material.dart';
-
 import '../../../../../constant.dart';
 
 
@@ -134,34 +133,6 @@ class _CustomAccountItemState extends State<CustomAccountItem> {
                     SizedBox(
                       height: 6,
                     ),
-                    // CustomButton(
-                    //   width: double.infinity,
-                    //   height: 44,
-                    //   text: 'تفاصيل',
-                    //   color: blueHawai.withOpacity(0.102),
-                    //   textColor: Colors.black,
-                    //   fontSize: 18,
-                    //   onTap: () => showDialog<String>(
-                    //     context: context,
-                    //     builder: (BuildContext context) => AlertDialog(
-                    //       backgroundColor: Colors.white,
-                    //       title: Image.asset(
-                    //         AssetsData.callCenter,
-                    //         width: 100,
-                    //         height: 100,
-                    //       ),
-                    //       content: const Text(
-                    //         '+20 1546546464\nتواصل معنا',
-                    //         textAlign: TextAlign.center,
-                    //         style: TextStyle(
-                    //             color: Colors.black,
-                    //             fontSize: 25,
-                    //             fontFamily: baseFont,
-                    //             fontWeight: FontWeight.w700),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     OrderDetailsButton(),
                   ],
                 ),

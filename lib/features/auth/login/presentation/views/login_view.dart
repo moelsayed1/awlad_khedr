@@ -1,27 +1,26 @@
 import 'package:awlad_khedr/constant.dart';
-import 'package:awlad_khedr/core/assets.dart';
 import 'package:awlad_khedr/core/custom_button.dart';
 import 'package:awlad_khedr/core/custom_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:provider/provider.dart';
 import '../../../../../core/app_router.dart';
+import '../../data/provider/login_provider.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
-
   @override
   State<LoginView> createState() => _LoginViewState();
 }
 
 class _LoginViewState extends State<LoginView> {
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool passwordVisible = true;
 
   @override
   Widget build(BuildContext context) {
+    final loginProvider = Provider.of<LoginProvider>(context);
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -45,27 +44,27 @@ class _LoginViewState extends State<LoginView> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(height: 100), // Space at the top
-                    InkWell(
-                      onTap: () {
-                        GoRouter.of(context).pop();
-                      },
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            AssetsData.back,
-                            color: Colors.black,
-                          ),
-                          const Text(
-                            'للخلف',
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                                fontFamily: baseFont,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // InkWell(
+                    //   onTap: () {
+                    //     GoRouter.of(context).pop();
+                    //   },
+                    //   child: Row(
+                    //     children: [
+                    //       Image.asset(
+                    //         AssetsData.back,
+                    //         color: Colors.black,
+                    //       ),
+                    //       const Text(
+                    //         'للخلف',
+                    //         style: TextStyle(
+                    //             fontSize: 18,
+                    //             color: Colors.black,
+                    //             fontFamily: baseFont,
+                    //             fontWeight: FontWeight.w500),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     const SizedBox(height: 30),
                     const Center(
                       child: Text(
@@ -89,45 +88,27 @@ class _LoginViewState extends State<LoginView> {
                       height: 42,
                     ),
                     CustomTextField(
-                      hintText: 'البريد الالكتروني',
+                      hintText: 'اسم المستخدم ',
                       inputType: TextInputType.emailAddress,
-                      controller: _emailController,
-                      validator: (value) {
-                        if (value!.isEmpty || !value.contains('@')) {
-                          return 'Please enter a valid email';
-                        }
-                        return null;
-                      },
+                      controller: _userNameController,
                     ),
                     const SizedBox(
                       height: 36,
                     ),
                     CustomTextField(
                       hintText: 'كلمة المرور',
+                      controller: _passwordController,
                       obscureText: passwordVisible,
                       prefixIcon: IconButton(
-                        icon: Icon(passwordVisible
-                            ? Icons.visibility_off
-                            : Icons.visibility),
+                        icon: Icon(
+                          passwordVisible ? Icons.visibility_off : Icons.visibility,
+                        ),
                         onPressed: () {
-                          setState(
-                            () {
-                              passwordVisible = !passwordVisible;
-                            },
-                          );
+                          setState(() {
+                            passwordVisible = !passwordVisible;
+                          });
                         },
                       ),
-                      onChanged: (value) {
-                        setState(() {
-                          _passwordController;
-                        });
-                      },
-                      validator: (value) {
-                        if (value!.isEmpty || value.length < 6) {
-                          return 'Password must be at least 6 characters long';
-                        }
-                        return null;
-                      },
                     ),
                     const SizedBox(
                       height: 6,
@@ -156,16 +137,46 @@ class _LoginViewState extends State<LoginView> {
                     const SizedBox(
                       height: 38,
                     ),
-                    CustomButton(
-                      onTap: (){
-                        GoRouter.of(context).push(AppRouter.kHomeScreen);
-                      },
+                    loginProvider.isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        :   loginProvider.isLoading
+                        ? const CircularProgressIndicator()
+                        : CustomButton(
+                        onTap: () async {
+                          print("Username: ${_userNameController.text}");
+                          print("Password: ${_passwordController.text}");
+
+                          if (_userNameController.text.isEmpty ||
+                              _passwordController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Username and password are required.'),
+                              ),
+                            );
+                            return;
+                          }
+                          await loginProvider.login(
+                            _userNameController.text.trim(),
+                            _passwordController.text.trim(),
+                          );
+                          if (loginProvider.token != null) {
+                            print("Login successful: ${loginProvider.token}");
+                            GoRouter.of(context).push(AppRouter.kHomeScreen);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Login failed. Please try again.'),
+                              ),
+                            );
+                          }
+                        },
                         text: 'دخول',
                         width: double.infinity,
                         height: 64,
                         color: Colors.black,
                         textColor: Colors.white,
-                        fontSize: 30),
+                        fontSize: 30
+                    ),
                     const SizedBox(
                       height: 18,
                     ),
