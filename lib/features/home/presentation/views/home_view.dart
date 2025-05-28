@@ -119,7 +119,7 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                   children: [
                     InkWell(
                       onTap: () {
-                        GoRouter.of(context).push(AppRouter.kMostRequestedPage);
+                        GoRouter.of(context).push(AppRouter.kCategoriesPage);
                       },
                       child: const Text(
                         "المزيد",
@@ -131,7 +131,7 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                       ),
                     ),
                     const Text(
-                      "الأصنافً",
+                      "الأصنـــاف",
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
@@ -164,7 +164,7 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                       ),
                     ),
                     const Text(
-                      "أكتر طلباً",
+                      "الأكثر طلباً",
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
