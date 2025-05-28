@@ -2,7 +2,8 @@ import 'package:awlad_khedr/core/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
 class SearchWidget extends StatefulWidget {
-  const SearchWidget({super.key});
+  final TextEditingController? controller;
+  const SearchWidget({super.key, this.controller});
 
   @override
   State<SearchWidget> createState() => _SearchWidgetState();

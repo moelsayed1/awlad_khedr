@@ -23,6 +23,7 @@ class Product {
     required this.imageUrl,
     required this.minimumSoldQuantity,
     required this.totalSold,
+    this.categoryName,
   });
 
   final int? productId;
@@ -33,6 +34,7 @@ class Product {
   final String? imageUrl;
   final String? minimumSoldQuantity;
   final String? totalSold;
+  final String? categoryName;
 
   factory Product.fromJson(Map<String, dynamic> json){
     return Product(
@@ -44,6 +46,7 @@ class Product {
       imageUrl: json["image_url"],
       minimumSoldQuantity: json["minimum_sold_quantity"],
       totalSold: json["total_sold"],
+      categoryName: json["category_name"],
     );
   }
 
