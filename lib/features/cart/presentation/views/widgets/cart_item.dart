@@ -21,7 +21,8 @@ class CartItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Calculate the subtotal for this specific item
-    final double itemSubtotal = (double.tryParse(product.productPrice ?? '0') ?? 0) * quantity;
+    final double itemSubtotal =
+        (double.tryParse(product.productPrice ?? '0') ?? 0) * quantity;
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
@@ -58,13 +59,12 @@ class CartItem extends StatelessWidget {
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  '${product.minimumSoldQuantity ?? 1} وحدة في السلة',
+                  '${quantity} وحدة في السلة',
                   style: TextStyle(
+                    color: Colors.grey,
                     fontSize: 14.sp,
-                    color: Colors.black54,
                     fontFamily: baseFont,
                   ),
-                  textDirection: TextDirection.rtl,
                 ),
                 SizedBox(height: 4.h),
                 Text(
@@ -95,13 +95,17 @@ class CartItem extends StatelessWidget {
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(5.r),
                         ),
-                        child: Icon(Icons.remove, size: 20.sp, color: Colors.black),
+                        child: Icon(Icons.remove,
+                            size: 20.sp, color: Colors.black),
                       ),
                     ),
                     SizedBox(width: 10.w),
                     Text(
                       '$quantity',
-                      style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, fontFamily: baseFont),
+                      style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: baseFont),
                     ),
                     SizedBox(width: 10.w),
                     InkWell(
@@ -114,7 +118,8 @@ class CartItem extends StatelessWidget {
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(5.r),
                         ),
-                        child: Icon(Icons.add, size: 20.sp, color: Colors.black),
+                        child:
+                            Icon(Icons.add, size: 20.sp, color: Colors.black),
                       ),
                     ),
                   ],
@@ -134,7 +139,8 @@ class CartItem extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.r),
                   color: Colors.white,
-                  boxShadow: [ // Added a subtle shadow to the image container
+                  boxShadow: [
+                    // Added a subtle shadow to the image container
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.08),
                       blurRadius: 6,
@@ -145,14 +151,17 @@ class CartItem extends StatelessWidget {
                 // CONDITIONAL IMAGE DISPLAY
                 child: product.imageUrl != null && product.imageUrl!.isNotEmpty
                     ? Image.network(
-                  product.imageUrl!,
-                  fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) {
-                    // Fallback to logoPng if network image fails to load
-                    return Image.asset(AssetsData.logoPng, fit: BoxFit.contain);
-                  },
-                )
-                    : Image.asset(AssetsData.logoPng, fit: BoxFit.contain), // Fallback if imageUrl is null or empty
+                        product.imageUrl!,
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          // Fallback to logoPng if network image fails to load
+                          return Image.asset(AssetsData.logoPng,
+                              fit: BoxFit.contain);
+                        },
+                      )
+                    : Image.asset(AssetsData.logoPng,
+                        fit: BoxFit
+                            .contain), // Fallback if imageUrl is null or empty
               ),
               SizedBox(height: 5.h),
               Text(
