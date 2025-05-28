@@ -5,6 +5,7 @@ import 'package:awlad_khedr/core/assets.dart';
 import 'package:awlad_khedr/features/products_screen/model/product_by_category_model.dart';
 import 'package:awlad_khedr/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 
 class HomeCategory extends StatefulWidget {
@@ -47,7 +48,7 @@ class _HomeCategoryState extends State<HomeCategory> {
   Widget build(BuildContext context) {
     return SizedBox(
         width: double.infinity,
-        height: 200,
+        height: 200.h,
         child: isListLoaded
             ? ListView.separated(
                 itemCount: productByCategory!.categories.length,
@@ -86,7 +87,7 @@ class _HomeCategoryState extends State<HomeCategory> {
                             child: productByCategory!.categories[index] != null
                                 ? Image.network(
                                     productByCategory!
-                                        .categories[index].categoryImage ?? 'https://unsplash.com/photos/person-holding-light-bulb-fIq0tET6llw',
+                                        .categories[index].categoryImage ?? 'https://img4cdn.haraj.com.sa/userfiles30/2022-08-23/800x689-1_-GO__MTY2MTI4MDM2MzM5OTk0NDE1OTEwNQ.jpg',
                                     fit: BoxFit.cover,
                                   )
                                 : Image.asset(

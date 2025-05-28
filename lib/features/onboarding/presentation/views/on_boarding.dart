@@ -43,7 +43,7 @@ class OnBoardingPage extends StatelessWidget {
                     'أبدأ معنا تجارتك الأن',
                     style: TextStyle(
                         color: Colors.black,
-                        fontSize: 45.sp,
+                        fontSize: 40.sp,
                         fontFamily: 'GE Dinar One',
                         fontWeight: FontWeight.w500),
                   ),
