@@ -1,99 +1,182 @@
-// import 'package:awlad_khedr/features/products_screen/presentation/model/items_list.dart';
+import 'package:awlad_khedr/constant.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/assets.dart';
+import '../../../../products_screen/model/product_by_category_model.dart';
 
-class CartItem extends StatefulWidget {
-  const CartItem({super.key});
+class CartItem extends StatelessWidget {
+  final Product product;
+  final int quantity;
+  final int index;
+  final void Function(int, int) onQuantityChanged;
 
-  @override
-  _ProductScreenState createState() => _ProductScreenState();
-}
-
-class _ProductScreenState extends State<CartItem> {
+  const CartItem({
+    super.key,
+    required this.product,
+    required this.quantity,
+    required this.index,
+    required this.onQuantityChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      itemCount: 5,
-        // itemCount: groceryItems.length,
-        // physics: NeverScrollableScrollPhysics(),
-        separatorBuilder: (BuildContext context, int index) => const SizedBox(
-          height: 15,
-        ),
-        shrinkWrap: true,
-        scrollDirection: Axis.vertical,
-        reverse: false,
-        itemBuilder: (BuildContext context, int index) {
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.8),
-                                blurRadius: 6,
+    // Calculate the subtotal for this specific item
+    final double itemSubtotal = (double.tryParse(product.productPrice ?? '0') ?? 0) * quantity;
 
-                                offset: const Offset(0, 3),
-                              ),
-                            ]),
-                        child: Image.asset(
-                          AssetsData.logoPng,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      // Product Information
-                       const Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'as',
-                              // groceryItems[index].name,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Text(
-                              "unites",
-                              // "شرنك =${groceryItems[index].quantity}",
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Text(
-                              'price',
-                              // "${groceryItems[index].price} سعر ",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Colors.orange,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                       // CounterVertical(index: index,item: groceryItems[index],),
-                    ],
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Left Side: Product Info (Name, units in cart, price) and Quantity Controls
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  product.productName ?? '',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.sp,
+                    color: Colors.black,
+                    fontFamily: baseFont,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textDirection: TextDirection.rtl, // Right-to-left for Arabic
                 ),
+                SizedBox(height: 4.h),
+                Text(
+                  '${product.minimumSoldQuantity ?? 1} وحدة في السلة',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: Colors.black54,
+                    fontFamily: baseFont,
+                  ),
+                  textDirection: TextDirection.rtl,
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  '${itemSubtotal.toStringAsFixed(0)} جنيه ', // Display subtotal
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.sp,
+                    color: Colors.orange,
+                    fontFamily: baseFont,
+                  ),
+                  textDirection: TextDirection.rtl,
+                ),
+                SizedBox(height: 10.h),
+
+                // Quantity Controls (Add/Remove)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        if (quantity > 1) {
+                          onQuantityChanged(index, quantity - 1);
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(4.w),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(5.r),
+                        ),
+                        child: Icon(Icons.remove, size: 20.sp, color: Colors.black),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Text(
+                      '$quantity',
+                      style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, fontFamily: baseFont),
+                    ),
+                    SizedBox(width: 10.w),
+                    InkWell(
+                      onTap: () {
+                        onQuantityChanged(index, quantity + 1);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(4.w),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(5.r),
+                        ),
+                        child: Icon(Icons.add, size: 20.sp, color: Colors.black),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(width: 15.w),
+
+          // Right Side: Product Image (from model) and Static Labels
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Container(
+                width: 70.w,
+                height: 70.w,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.r),
+                  color: Colors.white,
+                  boxShadow: [ // Added a subtle shadow to the image container
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.08),
+                      blurRadius: 6,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                // CONDITIONAL IMAGE DISPLAY
+                child: product.imageUrl != null && product.imageUrl!.isNotEmpty
+                    ? Image.network(
+                  product.imageUrl!,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    // Fallback to logoPng if network image fails to load
+                    return Image.asset(AssetsData.logoPng, fit: BoxFit.contain);
+                  },
+                )
+                    : Image.asset(AssetsData.logoPng, fit: BoxFit.contain), // Fallback if imageUrl is null or empty
+              ),
+              SizedBox(height: 5.h),
+              Text(
+                'as unites',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: Colors.grey[600],
+                  fontFamily: baseFont,
+                ),
+                textDirection: TextDirection.rtl,
+              ),
+              Text(
+                'الســـــعر',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: Colors.grey[600],
+                  fontFamily: baseFont,
+                ),
+                textDirection: TextDirection.rtl,
               ),
             ],
-          );
-        });
+          ),
+        ],
+      ),
+    );
   }
 }
