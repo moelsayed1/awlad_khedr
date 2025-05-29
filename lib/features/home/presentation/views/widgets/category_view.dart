@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:math'; // For min function
+import 'package:awlad_khedr/features/home/presentation/views/widgets/cart_view.dart';
 import 'package:awlad_khedr/features/home/presentation/views/widgets/categories_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -29,6 +30,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   bool isListLoaded = false;
 
   final Map<String, int> _productQuantities = {};
+  final List<Product> _cart = []; // <-- Add this line
 
   final List<String> _categories = [
     'الكل',
@@ -122,31 +124,25 @@ class _CategoriesPageState extends State<CategoriesPage> {
     });
   }
 
+  void _addToCart(Product product) {
+    setState(() {
+      if (!_cart.contains(product)) {
+        _cart.add(product);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${product.productName} تمت الإضافة إلى السلة!')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${product.productName} موجود بالفعل في السلة!')),
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // --- CHANGE APP BAR HERE ---
-      // Option 1: Use a custom CategoriesAppBar (recommended for consistency)
       appBar: const CategoriesAppBar(),
-      // Option 2: Use a standard AppBar with the title directly
-      // appBar: AppBar(
-      //   title: const Text(
-      //     'الأصنـــاف', // "Categories" in Arabic
-      //     style: TextStyle(
-      //       color: Colors.black, // Adjust color as needed
-      //       fontWeight: FontWeight.bold,
-      //     ),
-      //   ),
-      //   centerTitle: true,
-      //   backgroundColor: Colors.white, // Adjust color as needed
-      //   elevation: 0,
-      //   leading: Builder(
-      //     builder: (context) => IconButton(
-      //       icon: const Icon(Icons.menu, color: Colors.black), // Example menu icon
-      //       onPressed: () => Scaffold.of(context).openDrawer(),
-      //     ),
-      //   ),
-      // ),
       drawer: const CustomDrawer(),
       body: SingleChildScrollView(
         child: Padding(
@@ -178,17 +174,64 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 reverse: false,
                 itemBuilder: (BuildContext context, int index) {
                   final product = _filteredProducts[index];
-                  return ProductItemCard(
-                    product: product,
-                    quantity: _productQuantities[product.productName!] ?? 0,
-                    onQuantityChanged: (newQuantity) {
-                      _onQuantityChanged(product.productName!, newQuantity);
-                    },
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      ProductItemCard(
+                        product: product,
+                        quantity: _productQuantities[product.productName!] ?? 0,
+                        onQuantityChanged: (newQuantity) {
+                          _onQuantityChanged(product.productName!, newQuantity);
+                        },
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          // Expanded Add to Cart button
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () => _addToCart(product),
+                              child: const Text('إضافة إلى السلة'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.orange,
+                                foregroundColor: Colors.white,
+                                minimumSize: const Size(0, 40),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          // Expanded Cart button
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: _cart.isEmpty
+                                  ? null
+                                  : () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => CartPage(cartProducts: _cart),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(Icons.shopping_cart),
+                              label: Text('عرض السلة (${_cart.length})'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.orange,
+                                foregroundColor: Colors.white,
+                                minimumSize: const Size(0, 40),
+                                textStyle: const TextStyle(fontSize: 20),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   );
                 },
               )
                   : const Center(child: Text('No products available for the current filter.')))
                   : const Center(child: CircularProgressIndicator()),
+              // --- Add this at the end of the column ---
+              const SizedBox(height: 4),
             ],
           ),
         ),
