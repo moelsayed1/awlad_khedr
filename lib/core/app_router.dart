@@ -1,9 +1,12 @@
 import 'package:awlad_khedr/features/auth/login/presentation/views/login_view.dart';
 import 'package:awlad_khedr/features/auth/register/presentation/views/register_view.dart';
+import 'package:awlad_khedr/features/home/presentation/views/widgets/category_home.dart';
+import 'package:awlad_khedr/features/home/presentation/views/widgets/category_view.dart';
 import 'package:awlad_khedr/features/my_information/presentation/views/my_information.dart';
 import 'package:awlad_khedr/features/notification/presentaion/views/notification_page.dart';
 import 'package:awlad_khedr/features/home/presentation/views/home_view.dart';
 import 'package:awlad_khedr/features/onboarding/presentation/views/on_boarding.dart';
+import 'package:awlad_khedr/features/payment_gateway/presentation/views/payment_view.dart';
 import 'package:awlad_khedr/features/products_screen/presentation/views/products_screen_view.dart';
 import 'package:awlad_khedr/main.dart';
 import 'package:flutter/material.dart';
@@ -29,10 +32,12 @@ abstract class AppRouter {
   static const kSuccessScreen = '/successScreen';
   static const kHomeScreen = '/homeScreen';
   static const kMyInformation = '/myInformation';
+  static const kPaymentView = '/paymentView';
   static const kMyAccounts = '/myAccounts';
   static const kNotificationPage = '/notificationScreen';
   static const kProductsScreenView = '/productsScreenView';
   static const kMostRequestedPage = '/mostRequestedPage';
+  static const kCategoriesPage = '/categoriesPage';
   static const kCartViewPage = '/cartViewPage';
   static const kOrdersViewPage = '/ordersViewPage';
   static const kResetPasswordScreen = '/resetPasswordScreen';
@@ -70,6 +75,11 @@ abstract class AppRouter {
       path: kHomeScreen,
       builder: (context, state) => const HomeScreenView(),
     ),
+    // GoRoute(
+    //   parentNavigatorKey: _rootNavigatorKey,
+    //   path: kPaymentView,
+    //   builder: (context, state) => const PaymentView(products: products, total: total),
+    // ),
     GoRoute(
       parentNavigatorKey: _rootNavigatorKey,
       path: kMyInformation,
@@ -91,6 +101,10 @@ abstract class AppRouter {
     GoRoute(
       path: kMostRequestedPage,
       builder: (context, state) => const MostRequestedPage(),
+    ),
+    GoRoute(
+      path: kCategoriesPage, // <--- NEW ROUTE
+      builder: (context, state) => const CategoriesPage(), // <--- POINTS TO YOUR NEW PAGE
     ),
     GoRoute(
       path: kCartViewPage,
