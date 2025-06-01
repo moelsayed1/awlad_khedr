@@ -13,9 +13,9 @@ const baseFont = 'GE Dinar One';
 
 
 class APIConstant {
-  static const BASE_URL = "https://khedr.erpai-eg.com";
+  static const BASE_URL = "https://erp.khedrsons.com";
   static const REGISTRER_USER = "$BASE_URL/api/user/register";
-  static const  LOGIN_USER = "$BASE_URL/api/login";
+  static const LOGIN_USER = "$BASE_URL/api/login";
   static const GET_ALL_PRODUCTS = "$BASE_URL/api/products";
   static const GET_ALL_PRODUCTS_BY_CATEGORY = "$BASE_URL/api/category/products";
   static const GET_TOP_RATED_ITEMS = "$BASE_URL/api/products/totalSold";

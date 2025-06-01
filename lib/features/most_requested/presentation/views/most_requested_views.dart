@@ -5,7 +5,6 @@ import 'package:awlad_khedr/constant.dart';
 import 'package:awlad_khedr/features/most_requested/data/model/top_rated_model.dart';
 import 'package:awlad_khedr/main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../drawer_slider/presentation/views/side_slider.dart';

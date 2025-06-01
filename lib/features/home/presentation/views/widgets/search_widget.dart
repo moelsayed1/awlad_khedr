@@ -1,5 +1,6 @@
 import 'package:awlad_khedr/core/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:awlad_khedr/constant.dart';
 
 class SearchWidget extends StatefulWidget {
   final TextEditingController? controller;
@@ -12,9 +13,30 @@ class SearchWidget extends StatefulWidget {
 class _SearchWidgetState extends State<SearchWidget> {
   @override
   Widget build(BuildContext context) {
-    return const CustomTextField(
-      hintText: 'أبحث عن منتجاتك',
-      prefixIcon: Icon(Icons.search),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: TextField(
+        controller: widget.controller,
+        textAlign: TextAlign.right,
+        textDirection: TextDirection.rtl,
+        style: TextStyle(
+          fontFamily: baseFont,
+          fontSize: 14,
+        ),
+        decoration: InputDecoration(
+          hintText: 'أبحث عن منتجاتك',
+          hintStyle: TextStyle(
+            fontFamily: baseFont,
+            color: Colors.grey[600],
+          ),
+          prefixIcon: const Icon(Icons.search),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        ),
+      ),
     );
   }
 }

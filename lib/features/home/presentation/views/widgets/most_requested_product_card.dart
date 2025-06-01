@@ -43,8 +43,8 @@ class MostRequestedProductCard extends StatelessWidget {
                 SizedBox(height: 4.h),
                 // Product Price (Now correctly accesses 'price' from TopRatedProductModel.Product)
                 Text(
-                  '${product.price ?? '0'} EGP', // <--- This line will now work
-                  style: TextStyle(
+                  '${product.price ?? '0'} EGP', 
+                  style: TextStyle(  
                     fontWeight: FontWeight.bold,
                     fontSize: 12.sp,
                     color: Colors.orange,

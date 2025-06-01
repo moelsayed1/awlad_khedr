@@ -31,9 +31,9 @@ class _HomeCategoryState extends State<HomeCategory> {
           ProductByCategoryModel.fromJson(jsonDecode(response.body));
     }
     // if (topRatedItem!.products.isEmpty && topRatedItem!.products.isNotEmpty) {
-    setState(() {
-      isListLoaded = true;
-    });
+    // setState(() {
+    //   isListLoaded = true;
+    // });
     // }
   }
 
