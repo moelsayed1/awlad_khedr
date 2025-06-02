@@ -8,11 +8,11 @@ class ProductItemCard extends StatelessWidget {
   final Function(int) onQuantityChanged;
 
   const ProductItemCard({
-    Key? key,
+    super.key,
     required this.product,
     required this.quantity,
     required this.onQuantityChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class ProductItemCard extends StatelessWidget {
             children: [
               Text(
                 product.productName ?? '',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   fontFamily: baseFont,
@@ -43,12 +43,12 @@ class ProductItemCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'Price: ${product.price} ج.م',
+                'السعــر: ${product.price} ج.م',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 18,
                   color: Colors.orange[700],
                   fontFamily: baseFont,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 12),
@@ -57,7 +57,7 @@ class ProductItemCard extends StatelessWidget {
                 children: [
                   Text(
                     'الكمية: $quantity',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                       fontFamily: baseFont,
                       color: Colors.black87,

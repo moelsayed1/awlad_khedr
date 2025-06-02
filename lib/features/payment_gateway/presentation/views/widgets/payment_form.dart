@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PaymentForm extends StatefulWidget {
+  const PaymentForm({super.key});
+
   @override
   State<PaymentForm> createState() => PaymentFormState();
 }

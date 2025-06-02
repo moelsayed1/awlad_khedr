@@ -1,12 +1,10 @@
 import 'package:awlad_khedr/features/auth/login/presentation/views/login_view.dart';
 import 'package:awlad_khedr/features/auth/register/presentation/views/register_view.dart';
-import 'package:awlad_khedr/features/home/presentation/views/widgets/category_home.dart';
 import 'package:awlad_khedr/features/home/presentation/views/widgets/category_view.dart';
 import 'package:awlad_khedr/features/my_information/presentation/views/my_information.dart';
 import 'package:awlad_khedr/features/notification/presentaion/views/notification_page.dart';
 import 'package:awlad_khedr/features/home/presentation/views/home_view.dart';
 import 'package:awlad_khedr/features/onboarding/presentation/views/on_boarding.dart';
-import 'package:awlad_khedr/features/payment_gateway/presentation/views/payment_view.dart';
 import 'package:awlad_khedr/features/products_screen/presentation/views/products_screen_view.dart';
 import 'package:awlad_khedr/main.dart';
 import 'package:flutter/material.dart';

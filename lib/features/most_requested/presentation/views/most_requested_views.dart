@@ -26,14 +26,14 @@ class _MostRequestedPageState extends State<MostRequestedPage> {
 
   final Map<String, int> _productQuantities = {}; // Key: product ID or unique identifier, Value: quantity
 
-  final List<String> _categories = [
-    'الكل',
-    'المشروبات',
-    'منتجات البان',
-    'حلويات',
-    // Add more categories as needed
-  ];
-  String _selectedCategory = 'الكل'; // Initial selected category
+  // final List<String> _categories = [
+  //   'الكل',
+  //   'المشروبات',
+  //   'منتجات البان',
+  //   'حلويات',
+  //   // Add more categories as needed
+  // ];
+  // String _selectedCategory = 'الكل'; // Initial selected category
 
   final TextEditingController _searchController = TextEditingController();
   List<Product> _filteredProducts = [];
@@ -65,13 +65,13 @@ class _MostRequestedPageState extends State<MostRequestedPage> {
     List<Product> tempProducts = topRatedItem!.products;
 
     // Filter by category
-    if (_selectedCategory != 'الكل') {
-      tempProducts = tempProducts.where((p) {
-        // Now, 'p.categoryName' should exist.
-        // Convert both to lowercase for case-insensitive comparison.
-        return p.categoryName != null && p.categoryName!.toLowerCase() == _selectedCategory.toLowerCase();
-      }).toList();
-    }
+    // if (_selectedCategory != 'الكل') {
+    //   tempProducts = tempProducts.where((p) {
+    //     // Now, 'p.categoryName' should exist.
+    //     // Convert both to lowercase for case-insensitive comparison.
+    //     return p.categoryName != null && p.categoryName!.toLowerCase() == _selectedCategory.toLowerCase();
+    //   }).toList();
+    // }
 
     // --- Search Query Filtering Logic (already correct) ---
     if (_searchController.text.isNotEmpty) {
@@ -129,16 +129,16 @@ class _MostRequestedPageState extends State<MostRequestedPage> {
             children: [
               SearchWidget(controller: _searchController),
               const SizedBox(height: 8),
-              CategoryFilterBar(
-                categories: _categories,
-                selectedCategory: _selectedCategory,
-                onCategorySelected: (category) {
-                  setState(() {
-                    _selectedCategory = category;
-                  });
-                  _filterProducts();
-                },
-              ),
+              // CategoryFilterBar(
+              //   categories: _categories,
+              //   selectedCategory: _selectedCategory,
+              //   onCategorySelected: (category) {
+              //     setState(() {
+              //       _selectedCategory = category;
+              //     });
+              //     _filterProducts();
+              //   },
+              //),
               const SizedBox(height: 15),
               isListLoaded
                   ? (topRatedItem != null && _filteredProducts.isNotEmpty
