@@ -11,13 +11,12 @@ class PaymentView extends StatelessWidget {
   final List<Product> products;
   final double total;
 
-  const PaymentView({Key? key, required this.products, required this.total})
-      : super(key: key);
+  const PaymentView({super.key, required this.products, required this.total});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PaymentAppBar(),
+      appBar: const PaymentAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

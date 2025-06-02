@@ -59,7 +59,7 @@ class CartItem extends StatelessWidget {
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  '${quantity} وحدة في السلة',
+                  '$quantity وحدة في السلة',
                   style: TextStyle(
                     color: Colors.grey,
                     fontSize: 14.sp,

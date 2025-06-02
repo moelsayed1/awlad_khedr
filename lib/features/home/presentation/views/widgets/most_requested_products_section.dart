@@ -10,9 +10,9 @@ class MostRequestedProductsSection extends StatelessWidget {
   final List<trm.Product> products; // <--- FIX HERE
 
   const MostRequestedProductsSection({
-    Key? key,
+    super.key,
     required this.products,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

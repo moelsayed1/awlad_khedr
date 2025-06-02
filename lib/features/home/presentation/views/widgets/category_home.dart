@@ -30,18 +30,17 @@ class _HomeCategoryState extends State<HomeCategory> {
       productByCategory =
           ProductByCategoryModel.fromJson(jsonDecode(response.body));
     }
-    // if (topRatedItem!.products.isEmpty && topRatedItem!.products.isNotEmpty) {
-    // setState(() {
-    //   isListLoaded = true;
-    // });
-    // }
+    if (mounted) {
+      setState(() {
+        isListLoaded = true;
+      });
+    }
   }
 
   @override
   void initState() {
-    // TODO: implement initState
-    GetProductByCategory();
     super.initState();
+    GetProductByCategory();
   }
 
   @override
@@ -51,7 +50,7 @@ class _HomeCategoryState extends State<HomeCategory> {
         height: 200.h,
         child: isListLoaded
             ? ListView.separated(
-                itemCount: productByCategory!.categories.length,
+                itemCount: productByCategory?.categories.length ?? 0,
                 separatorBuilder: (BuildContext context, int index) =>
                     const SizedBox(
                   width: 15,
@@ -84,7 +83,7 @@ class _HomeCategoryState extends State<HomeCategory> {
                             width: double.infinity,
                             height: MediaQuery.sizeOf(context).height * .15,
                             color: Colors.transparent,
-                            child: productByCategory!.categories[index] != null
+                            child: productByCategory?.categories[index] != null
                                 ? Image.network(
                                     productByCategory!
                                         .categories[index].categoryImage ?? 'https://img4cdn.haraj.com.sa/userfiles30/2022-08-23/800x689-1_-GO__MTY2MTI4MDM2MzM5OTk0NDE1OTEwNQ.jpg',

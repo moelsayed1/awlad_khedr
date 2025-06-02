@@ -10,9 +10,9 @@ class MostRequestedProductCard extends StatelessWidget {
   final TopRatedProductModel.Product product; // <--- FIX IS HERE
 
   const MostRequestedProductCard({
-    Key? key,
+    super.key,
     required this.product,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

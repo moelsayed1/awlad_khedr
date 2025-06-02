@@ -115,7 +115,7 @@ class _CartViewPageState extends State<CartViewPage> {
             price: p.productPrice,
             image: p.image,
             imageUrl: p.imageUrl, productId: null, qtyAvailable: '',
-            minimumSoldQuantity: '', totalSold: '',
+            minimumSoldQuantity: '',
             // Add other fields as needed, or set to null/default if not available
           ),
         );

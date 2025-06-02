@@ -4,7 +4,8 @@ import 'package:awlad_khedr/constant.dart';
 
 class SearchWidget extends StatefulWidget {
   final TextEditingController? controller;
-  const SearchWidget({super.key, this.controller});
+  final Function(String)? onChanged;
+  const SearchWidget({super.key, this.controller, this.onChanged});
 
   @override
   State<SearchWidget> createState() => _SearchWidgetState();
@@ -20,10 +21,13 @@ class _SearchWidgetState extends State<SearchWidget> {
       ),
       child: TextField(
         controller: widget.controller,
+        onChanged: widget.onChanged,
         textAlign: TextAlign.right,
         textDirection: TextDirection.rtl,
-        style: TextStyle(
-          fontFamily: baseFont,
+        style: const TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.w500,
+          fontFamily: 'Tajawal',
           fontSize: 14,
         ),
         decoration: InputDecoration(

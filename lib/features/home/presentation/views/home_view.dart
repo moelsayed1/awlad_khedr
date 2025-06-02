@@ -11,8 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/app_router.dart';
 import '../../../drawer_slider/presentation/views/side_slider.dart';
 
-
-
 class HomeScreenView extends StatefulWidget {
   const HomeScreenView({super.key});
 
@@ -22,8 +20,6 @@ class HomeScreenView extends StatefulWidget {
 
 class _HomeScreenViewState extends State<HomeScreenView> {
   @override
-
-
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => _checkAndShowPopup());
