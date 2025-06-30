@@ -9,7 +9,6 @@ import 'package:http/http.dart' as http;
 
 import '../../../drawer_slider/presentation/views/side_slider.dart';
 import '../../../home/presentation/views/widgets/search_widget.dart';
-import '../widgets/category_filter_bar.dart';
 import '../widgets/most_requested_app_bar.dart';
 import '../widgets/product_item_card.dart';
 
@@ -100,10 +99,10 @@ class _MostRequestedPageState extends State<MostRequestedPage> {
         }
         _filterProducts(); // Apply initial filters (if any)
       } else {
-        print('Failed to load top rated items: ${response.statusCode}');
+        debugPrint('Failed to load top rated items: ${response.statusCode.toString()}');
       }
     } catch (e) {
-      print('Error fetching top rated items: $e');
+      debugPrint('Error fetching top rated items: ${e.toString()}');
     } finally {
       setState(() {
         isListLoaded = true;

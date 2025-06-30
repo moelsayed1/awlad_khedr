@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PaymentForm extends StatefulWidget {
-  const PaymentForm({super.key});
+  final VoidCallback? onPaymentSuccess;
+  const PaymentForm({super.key, this.onPaymentSuccess});
 
   @override
   State<PaymentForm> createState() => PaymentFormState();
@@ -39,6 +40,9 @@ class PaymentFormState extends State<PaymentForm> {
           backgroundColor: Colors.green,
         ),
       );
+      if (widget.onPaymentSuccess != null) {
+        widget.onPaymentSuccess!();
+      }
       Navigator.of(context).pop();
     }
   }

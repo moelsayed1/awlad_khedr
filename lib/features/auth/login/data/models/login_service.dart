@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:awlad_khedr/constant.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,12 +21,12 @@ class LoginService {
         final data = jsonDecode(response.body);
         return data['token'];
       } else {
-        print('Login failed with status code: ${response.statusCode}');
-        print('Response body: ${response.body}');
+        log('Login failed with status code: ${response.statusCode}');
+        log('Response body: ${response.body}');
         return null;
       }
     } catch (e) {
-      print('Error: $e');
+      log('Error: $e');
       return null;
     }
   }

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../constant.dart';
+import 'dart:developer';
 import '../../../../../main.dart';
 import '../../../model/product_by_category_model.dart';
 
@@ -34,7 +35,7 @@ class _CustomCategorySelectorState extends State<CustomCategorySelector> {
         throw Exception('Failed to load categories');
       }
     } catch (error) {
-      print("Error fetching categories: $error");
+      log("Error fetching categories: $error");
       setState(() {
         isListLoaded = true;
       });

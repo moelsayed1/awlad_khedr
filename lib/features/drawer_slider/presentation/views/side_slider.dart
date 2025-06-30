@@ -3,6 +3,7 @@ import 'package:awlad_khedr/core/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'dart:developer';
 
 import '../../../../core/app_router.dart';
 import '../../../auth/login/data/provider/login_provider.dart';
@@ -242,7 +243,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     loginProvider.logout();
 
                     GoRouter.of(context).pushReplacement(AppRouter.kLoginView);
-                    print("TOOOOkEEEEEEEN${loginProvider.token.toString()}");
+                    log("TOOOOkEEEEEEEN${loginProvider.token.toString()}");
                   },
                 ),
               ),

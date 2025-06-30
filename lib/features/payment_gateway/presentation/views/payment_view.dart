@@ -10,8 +10,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class PaymentView extends StatelessWidget {
   final List<Product> products;
   final double total;
+  final VoidCallback? onPaymentSuccess;
 
-  const PaymentView({super.key, required this.products, required this.total});
+  const PaymentView({super.key, required this.products, required this.total, this.onPaymentSuccess});
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +87,7 @@ class PaymentView extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 24),
-            PaymentForm(),
+            PaymentForm(onPaymentSuccess: onPaymentSuccess),
           ],
         ),
       ),

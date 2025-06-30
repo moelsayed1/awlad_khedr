@@ -9,12 +9,14 @@ class CartSheet extends StatelessWidget {
   final Map<Product, int> cart;
   final double total;
   final VoidCallback onClose;
+  final VoidCallback? onPaymentSuccess;
 
   const CartSheet({
     super.key,
     required this.cart,
     required this.total,
     required this.onClose,
+    this.onPaymentSuccess,
   });
 
   @override
@@ -137,6 +139,7 @@ class CartSheet extends StatelessWidget {
                             builder: (_) => PaymentView(
                               products: cart.keys.toList(),
                               total: total,
+                              onPaymentSuccess: onPaymentSuccess,
                             ),
                           ),
                         );

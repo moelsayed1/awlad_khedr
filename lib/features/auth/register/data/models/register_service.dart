@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:awlad_khedr/features/auth/register/data/models/register_model.dart';
 import 'package:http/http.dart' as http;
+import 'dart:developer';
 
 import '../../../../../constant.dart';
 
@@ -37,14 +38,14 @@ class RegistrationService {
 
       if (response.statusCode == 200) {
         var responseData = await http.Response.fromStream(response);
-        print(RegistrationResponse.fromJson(jsonDecode(responseData.body)));
+        log(RegistrationResponse.fromJson(jsonDecode(responseData.body)).toString());
         return RegistrationResponse.fromJson(jsonDecode(responseData.body));
       } else {
-        print('Registration failed with status: ${response.statusCode}');
+        log('Registration failed with status: ${response.statusCode}');
         return null;
       }
     } catch (e) {
-      print('Error during registration: $e');
+      log('Error during registration: $e');
       return null;
     }
   }

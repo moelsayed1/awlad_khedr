@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:awlad_khedr/features/home/data/model/carousel_model.dart'; // Assuming BannersModel and Datum are here
 import 'package:carousel_slider/carousel_slider.dart'; // This is the correct package import
 import 'package:flutter/material.dart'; // <--- FIX: Hide Flutter's CarouselController
@@ -35,7 +36,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseBody = jsonDecode(response.body);
         bannersModel = BannersModel.fromJson(responseBody);
-        debugPrint('Banners API Response: ${response.body}');
+        log('Banners API Response: ${response.body}');
 
         if (bannersModel != null && bannersModel!.data.isNotEmpty) {
           setState(() {
@@ -43,21 +44,21 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
             hasError = false;
           });
         } else {
-          debugPrint('Banners data is empty or null.');
+          log('Banners data is empty or null.');
           setState(() {
             isBannerLoaded = true;
             hasError = true;
           });
         }
       } else {
-        debugPrint('Failed to load banners: ${response.statusCode}, Body: ${response.body}');
+        log('Failed to load banners: ${response.statusCode}, Body: ${response.body}');
         setState(() {
           isBannerLoaded = true;
           hasError = true;
         });
       }
     } catch (e) {
-      debugPrint('Error fetching banners: $e');
+      log('Error fetching banners: $e');
       setState(() {
         isBannerLoaded = true;
         hasError = true;

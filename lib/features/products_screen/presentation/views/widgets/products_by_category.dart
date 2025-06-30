@@ -84,11 +84,11 @@ class _ProductScreenState extends State<ProductItemByCategory> {
                                 offset: const Offset(0, 3),
                               ),
                             ]),
-                        child: product.imageUrl != null
+                        child: (product.imageUrl != null && product.imageUrl!.isNotEmpty && product.imageUrl! != 'https://erp.khedrsons.com/uploads/img/1745829725_%D9%81%D8%B1%D9%8A%D9%85.png')
                             ? Image.network(
-                          product.imageUrl!,
-                          fit: BoxFit.contain,
-                        )
+                                product.imageUrl!,
+                                fit: BoxFit.contain,
+                              )
                             : const Icon(Icons.image_not_supported),
                       ),
                       const SizedBox(width: 10),

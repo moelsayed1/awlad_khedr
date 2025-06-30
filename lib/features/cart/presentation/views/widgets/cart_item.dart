@@ -149,7 +149,7 @@ class CartItem extends StatelessWidget {
                   ],
                 ),
                 // CONDITIONAL IMAGE DISPLAY
-                child: product.imageUrl != null && product.imageUrl!.isNotEmpty
+                child: (product.imageUrl != null && product.imageUrl!.isNotEmpty && product.imageUrl! != 'https://erp.khedrsons.com/uploads/img/1745829725_%D9%81%D8%B1%D9%8A%D9%85.png')
                     ? Image.network(
                         product.imageUrl!,
                         fit: BoxFit.contain,
@@ -160,8 +160,7 @@ class CartItem extends StatelessWidget {
                         },
                       )
                     : Image.asset(AssetsData.logoPng,
-                        fit: BoxFit
-                            .contain), // Fallback if imageUrl is null or empty
+                        fit: BoxFit.contain), // Fallback if imageUrl is null, empty, or matches problematic URL
               ),
               SizedBox(height: 5.h),
               Text(

@@ -3,15 +3,50 @@ import 'package:http/http.dart' as http;
 import 'package:awlad_khedr/constant.dart';
 import 'package:awlad_khedr/main.dart';
 import 'package:awlad_khedr/features/most_requested/data/model/top_rated_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer';
+
 
 class CategoryRepository {
+  Future<bool> _validateToken() async {
+    if (authToken.isEmpty) {
+      return false;
+    }
+    try {
+      final response = await http.get(
+        Uri.parse(APIConstant.GET_ALL_PRODUCTS),
+        headers: {
+          "Authorization": "Bearer $authToken",
+          "Accept": "application/json",
+        },
+      );
+      return response.statusCode == 200;
+    } catch (e) {
+      log('Error validating token: $e');
+      return false;
+    }
+  }
+
+  Future<void> _clearInvalidToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
+    authToken = '';
+  }
+
   Future<List<String>> fetchCategories() async {
     try {
+      if (!await _validateToken()) {
+        await _clearInvalidToken();
+        throw Exception('Invalid or expired token');
+      }
+
       final response = await http.get(
         Uri.parse(APIConstant.GET_ALL_PRODUCTS_BY_CATEGORY),
         headers: {
           "Authorization": "Bearer $authToken",
           "Accept": "application/json",
+          "Cache-Control": "no-cache",
+          "Pragma": "no-cache",
         },
       );
 
@@ -27,22 +62,33 @@ class CategoryRepository {
           }
         }
         return ['الكل', ...fetchedCategories.toSet()];
+      } else if (response.statusCode == 401) {
+        await _clearInvalidToken();
+        throw Exception('Unauthorized access');
+      } else {
+        throw Exception('Failed to fetch categories: ${response.statusCode}');
       }
-      return ['الكل'];
     } catch (e) {
-      print('Error fetching categories: $e');
+      log('Error fetching categories: $e');
       return ['الكل'];
     }
   }
 
   Future<List<Product>> fetchAllProducts() async {
     try {
+      if (!await _validateToken()) {
+        await _clearInvalidToken();
+        throw Exception('Invalid or expired token');
+      }
+
       final response = await http.get(
         Uri.parse(APIConstant.GET_ALL_PRODUCTS),
         headers: {
           "Authorization": "Bearer $authToken",
           "Accept": "application/json",
           "Content-Type": "application/json",
+          "Cache-Control": "no-cache",
+          "Pragma": "no-cache",
         },
       );
 
@@ -71,16 +117,25 @@ class CategoryRepository {
               .toList();
         }
         return products;
+      } else if (response.statusCode == 401) {
+        await _clearInvalidToken();
+        throw Exception('Unauthorized access');
+      } else {
+        throw Exception('Failed to fetch products: ${response.statusCode}');
       }
-      return [];
     } catch (e) {
-      print('Error fetching all products: $e');
+      log('Error fetching all products: $e');
       return [];
     }
   }
 
   Future<List<Product>> fetchProductsByCategory(String category) async {
     try {
+      if (!await _validateToken()) {
+        await _clearInvalidToken();
+        throw Exception('Invalid or expired token');
+      }
+
       final response = await http.get(
         Uri.parse(APIConstant.GET_ALL_PRODUCTS_BY_CATEGORY).replace(
           queryParameters: {'category_name': category},
@@ -88,6 +143,8 @@ class CategoryRepository {
         headers: {
           "Authorization": "Bearer $authToken",
           "Accept": "application/json",
+          "Cache-Control": "no-cache",
+          "Pragma": "no-cache",
         },
       );
 
@@ -120,10 +177,14 @@ class CategoryRepository {
           }
         }
         return productsForSelectedCategory;
+      } else if (response.statusCode == 401) {
+        await _clearInvalidToken();
+        throw Exception('Unauthorized access');
+      } else {
+        throw Exception('Failed to fetch category products: ${response.statusCode}');
       }
-      return [];
     } catch (e) {
-      print('Error fetching category products: $e');
+      log('Error fetching category products: $e');
       return [];
     }
   }
