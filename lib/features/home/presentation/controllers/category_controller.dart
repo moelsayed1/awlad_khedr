@@ -19,7 +19,10 @@ class CategoryController extends ChangeNotifier {
     if (!_disposed) notifyListeners();
   }
 
-  CategoryController(this._repository);
+  CategoryController(this._repository) {
+    // Initialize data immediately when controller is created
+    initializeData();
+  }
 
   // State
   TopRatedModel? topRatedItem;
@@ -53,25 +56,29 @@ class CategoryController extends ChangeNotifier {
     safeNotifyListeners();
 
     try {
+      // Fetch categories first
       await fetchCategories();
-      // Ensure products are fetched initially based on the default selectedCategory
+      
+      // Then fetch products based on selected category
       if (selectedCategory == 'الكل') {
         await fetchAllProducts();
       } else {
         await fetchProductsByCategory();
       }
-    } catch (e) {
-      log('Error initializing data: $e');
-      // Consider setting isListLoaded to true even on error to show content or an error message
+
+      // Initialize filtered products
+      filteredProducts = topRatedItem?.products ?? [];
+      
+      // Mark data as loaded
       isListLoaded = true;
       safeNotifyListeners();
-    } finally {
-      // isListLoaded is set to true after initial data fetch, regardless of success or failure
-      // so the UI can stop showing the progress indicator.
-      if (!isListLoaded) { // Only set to true if not already set by error handling
-        isListLoaded = true;
-        safeNotifyListeners();
-      }
+
+    } catch (e) {
+      log('Error initializing data: $e');
+      isListLoaded = true;
+      topRatedItem = TopRatedModel(products: []); // Initialize with empty list on error
+      filteredProducts = [];
+      safeNotifyListeners();
     }
   }
 
@@ -98,16 +105,29 @@ class CategoryController extends ChangeNotifier {
   }
 
   Future<void> fetchProductsByCategory() async {
+    if (selectedCategory == null || selectedCategory.isEmpty) {
+      log('No category selected');
+      return;
+    }
+
     isListLoaded = false; // Set to false before fetching
     safeNotifyListeners();
+    
     try {
       final products = await _repository.fetchProductsByCategory(selectedCategory);
-      topRatedItem = TopRatedModel(products: products);
-      _updateProductQuantities(products);
-      applySearchFilter(_currentSearchQuery); // Re-apply search filter after new products are fetched
+      if (products != null && products.isNotEmpty) {
+        topRatedItem = TopRatedModel(products: products);
+        _updateProductQuantities(products);
+        filteredProducts = products; // Set filtered products directly first
+        applySearchFilter(_currentSearchQuery); // Then apply any search filter
+      } else {
+        topRatedItem = TopRatedModel(products: []);
+        filteredProducts = [];
+      }
     } catch (e) {
       log('Error fetching category products: $e');
       topRatedItem = TopRatedModel(products: []); // Clear products on error
+      filteredProducts = [];
     } finally {
       isListLoaded = true;
       safeNotifyListeners();

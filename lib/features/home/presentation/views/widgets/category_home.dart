@@ -88,6 +88,9 @@ class _HomeCategoryState extends State<HomeCategory> {
                                     productByCategory!
                                         .categories[index].categoryImage ?? 'https://img4cdn.haraj.com.sa/userfiles30/2022-08-23/800x689-1_-GO__MTY2MTI4MDM2MzM5OTk0NDE1OTEwNQ.jpg',
                                     fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Image.asset('assets/images/logoPng.png', fit: BoxFit.cover);
+                                    },
                                   )
                                 : Image.asset(
                                     AssetsData.callCenter,

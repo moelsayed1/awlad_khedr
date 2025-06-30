@@ -87,6 +87,9 @@ bool isProductsLoaded = false ;
                         child: Image.network(
                           productsLista!.products![index].imageUrl!,
                           fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.asset('assets/images/logoPng.png', fit: BoxFit.contain);
+                          },
                         ),
                       ),
                       const SizedBox(width: 10),

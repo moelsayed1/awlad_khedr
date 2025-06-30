@@ -19,6 +19,9 @@ import '../features/cart/presentation/views/cart_view.dart';
 import '../features/drawer_slider/presentation/views/widgets/my_accounts.dart';
 import '../features/most_requested/presentation/views/most_requested_views.dart';
 import '../features/order/presentation/views/orders_view.dart';
+import 'package:provider/provider.dart';
+import 'package:awlad_khedr/features/home/presentation/controllers/category_controller.dart';
+import 'package:awlad_khedr/features/home/data/repositories/category_repository.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -102,7 +105,10 @@ abstract class AppRouter {
     ),
     GoRoute(
       path: kCategoriesPage, // <--- NEW ROUTE
-      builder: (context, state) => const CategoriesPage(), // <--- POINTS TO YOUR NEW PAGE
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (_) => CategoryController(CategoryRepository()),
+        child: const CategoriesPage(),
+      ),
     ),
     GoRoute(
       path: kCartViewPage,

@@ -88,11 +88,7 @@ class _CategoriesViewState extends State<_CategoriesView> {
   void initState() {
     super.initState();
     searchController = TextEditingController();
-    // Delay initialization until after the first frame
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final controller = context.read<CategoryController>();
-      controller.initializeData();
-    });
+    // No need to manually initialize controller data here; it's done in the controller's constructor.
   }
 
   @override
@@ -159,40 +155,45 @@ class _CategoriesViewState extends State<_CategoriesView> {
                 ),
               )
             else
-              Expanded( // Wrap ListView.separated with Expanded
-                child: ListView.separated(
-                  itemCount: controller.filteredProducts.length,
-                  // REMOVE physics: const NeverScrollableScrollPhysics(),
-                  // REMOVE shrinkWrap: true,
-                  separatorBuilder: (context, index) => const SizedBox(height: 15),
-                  itemBuilder: (context, index) {
-                    final product = controller.filteredProducts[index];
-                    // Ensure productId is reliably unique, fallback to productName or a generated key
-                    final String quantityKey = product.productId?.toString() ?? product.productName ?? 'product_${index}';
-
-                    return Padding( // Add padding around each card if needed, or keep it in ProductItemCard
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0), // Apply horizontal padding here
-                      child: Column(
-                        children: [
-                          ProductItemCard(
-                            product: product,
-                            quantity: controller.productQuantities[quantityKey] ?? 0,
-                            onQuantityChanged: (newQuantity) {
-                              controller.onQuantityChanged(quantityKey, newQuantity);
-                              // Update the cart as well
-                              if (newQuantity > 0) {
-                                controller.cart[product] = newQuantity;
-                              } else {
-                                controller.cart.remove(product);
-                              }
-                              controller.safeNotifyListeners();
-                            },
-                            onAddToCart: () => controller.addToCart(product),
-                          ),
-                        ],
-                      ),
-                    );
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    if (controller.selectedCategory == 'الكل') {
+                      await controller.fetchAllProducts();
+                    } else {
+                      await controller.fetchProductsByCategory();
+                    }
                   },
+                  backgroundColor: Colors.white,
+                  child: ListView.separated(
+                    itemCount: controller.filteredProducts.length,
+                    separatorBuilder: (context, index) => const SizedBox(height: 15),
+                    itemBuilder: (context, index) {
+                      final product = controller.filteredProducts[index];
+                      final String quantityKey = product.productId?.toString() ?? product.productName ?? 'product_${index}';
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Column(
+                          children: [
+                            ProductItemCard(
+                              product: product,
+                              quantity: controller.productQuantities[quantityKey] ?? 0,
+                              onQuantityChanged: (newQuantity) {
+                                controller.onQuantityChanged(quantityKey, newQuantity);
+                                if (newQuantity > 0) {
+                                  controller.cart[product] = newQuantity;
+                                } else {
+                                  controller.cart.remove(product);
+                                }
+                                controller.safeNotifyListeners();
+                              },
+                              onAddToCart: () => controller.addToCart(product),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
           ],

@@ -89,7 +89,10 @@ class ProductItemCard extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
-                            child: (product.imageUrl != null && product.imageUrl!.isNotEmpty && product.imageUrl! != 'https://erp.khedrsons.com/uploads/img/1745829725_%D9%81%D8%B1%D9%8A%D9%85.png')
+                            child: (product.imageUrl != null &&
+                                    product.imageUrl!.isNotEmpty &&
+                                    product.imageUrl! != 'https://erp.khedrsons.com/uploads/img/1745829725_%D9%81%D8%B1%D9%8A%D9%85.png' &&
+                                    !product.imageUrl!.toLowerCase().endsWith('فريم.png'))
                                 ? Image.network(
                                     product.imageUrl!,
                                     fit: BoxFit.cover,

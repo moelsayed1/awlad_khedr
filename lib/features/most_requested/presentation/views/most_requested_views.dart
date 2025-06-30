@@ -158,6 +158,7 @@ class _MostRequestedPageState extends State<MostRequestedPage> {
                     onQuantityChanged: (newQuantity) {
                       _onQuantityChanged(product.productName!, newQuantity);
                     },
+                    onAddToCart: null,
                   );
                 },
               )
