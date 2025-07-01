@@ -77,8 +77,8 @@ class _TopRatedItemState extends State<TopRatedItem> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                          width: double.infinity,
-                          height: MediaQuery.sizeOf(context).height * .15,
+                          width: MediaQuery.sizeOf(context).width * 0.4,
+                          height: MediaQuery.sizeOf(context).height * .18,
                           color: Colors.transparent,
                           child: (topRatedItem?.products[index].imageUrl != null &&
                                   topRatedItem!.products[index].imageUrl!.isNotEmpty &&

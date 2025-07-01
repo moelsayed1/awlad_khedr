@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:awlad_khedr/constant.dart';
+import 'package:awlad_khedr/features/home/presentation/widgets/cart_sheet.dart';
 import 'package:awlad_khedr/features/most_requested/data/model/top_rated_model.dart';
 import 'package:awlad_khedr/main.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class _MostRequestedPageState extends State<MostRequestedPage> {
   bool isListLoaded = false;
 
   final Map<String, int> _productQuantities = {}; // Key: product ID or unique identifier, Value: quantity
+  final Map<Product, int> _cart = {}; // Add cart map
 
   // final List<String> _categories = [
   //   'الكل',
@@ -118,6 +120,17 @@ class _MostRequestedPageState extends State<MostRequestedPage> {
 
   @override
   Widget build(BuildContext context) {
+    double cartTotal = 0;
+    _cart.forEach((product, qty) {
+      final price = product.price;
+      double priceValue = 0;
+      if (price is num) {
+        priceValue = (price as num?)?.toDouble() ?? 0;
+      } else if (price is String) {
+        priceValue = double.tryParse(price) ?? 0;
+      }
+      cartTotal += priceValue * qty;
+    });
     return Scaffold(
       appBar: const MostRequestedAppBar(),
       drawer: const CustomDrawer(),
@@ -158,7 +171,14 @@ class _MostRequestedPageState extends State<MostRequestedPage> {
                     onQuantityChanged: (newQuantity) {
                       _onQuantityChanged(product.productName!, newQuantity);
                     },
-                    onAddToCart: null,
+                    onAddToCart: () {
+                      final currentQuantity = _productQuantities[product.productName!] ?? 0;
+                      final newQuantity = currentQuantity + 1;
+                      setState(() {
+                        _productQuantities[product.productName!] = newQuantity;
+                        _cart[product] = newQuantity;
+                      });
+                    },
                   );
                 },
               )
@@ -168,6 +188,41 @@ class _MostRequestedPageState extends State<MostRequestedPage> {
           ),
         ),
       ),
+      floatingActionButton: _cart.isNotEmpty
+          ? FloatingActionButton.extended(
+              backgroundColor: Colors.orange,
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (context) => DraggableScrollableSheet(
+                    initialChildSize: 0.33,
+                    minChildSize: 0.33,
+                    maxChildSize: 0.33,
+                    expand: false,
+                    builder: (context, scrollController) {
+                      return CartSheet(
+                        cart: _cart,
+                        total: cartTotal,
+                        onClose: () => Navigator.pop(context),
+                      );
+                    },
+                  ),
+                );
+              },
+              label: Text(
+                'السلة (${_cart.length})',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: baseFont,
+                ),
+              ),
+              icon: const Icon(Icons.shopping_cart, color: Colors.white),
+            )
+          : null,
     );
   }
 }

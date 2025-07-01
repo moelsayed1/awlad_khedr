@@ -95,7 +95,7 @@ class _CategoriesViewState extends State<_CategoriesView> {
   void dispose() {
     searchController.dispose();
     super.dispose();
-  }
+  } 
 
   @override
   Widget build(BuildContext context) {
@@ -187,7 +187,13 @@ class _CategoriesViewState extends State<_CategoriesView> {
                                 }
                                 controller.safeNotifyListeners();
                               },
-                              onAddToCart: () => controller.addToCart(product),
+                              onAddToCart: () {
+                                final currentQuantity = controller.productQuantities[quantityKey] ?? 0;
+                                final newQuantity = currentQuantity + 1;
+                                controller.onQuantityChanged(quantityKey, newQuantity);
+                                controller.cart[product] = newQuantity;
+                                controller.safeNotifyListeners();
+                              },
                             ),
                           ],
                         ),

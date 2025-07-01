@@ -219,7 +219,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 ),
               ),
               SizedBox(
-                height: MediaQuery.sizeOf(context).height * .35,
+                height: MediaQuery.sizeOf(context).height * .42,
               ),
               Directionality(
                 textDirection: TextDirection.rtl,

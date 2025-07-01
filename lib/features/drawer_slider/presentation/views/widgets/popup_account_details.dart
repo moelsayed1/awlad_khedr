@@ -1,4 +1,6 @@
 import 'package:awlad_khedr/constant.dart';
+import 'package:awlad_khedr/features/payment_gateway/presentation/views/payment_view.dart';
+import 'package:awlad_khedr/features/payment_gateway/presentation/views/widgets/payment_form.dart';
 import 'package:flutter/material.dart';
 
 class OrderDetailsButton extends StatelessWidget {
@@ -152,12 +154,34 @@ class OrderDetailsPopup extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     Navigator.of(context).pop();
-            //   },
-            //   child: const Text('تم'),
-            // ),
+            SizedBox(
+              width: double.infinity,
+              height: 44,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: darkOrange,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const PaymentView(products: [], total: 0.0),
+                    ),
+                  );
+                },
+                child: const Text(
+                  'الدفع',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: baseFont
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

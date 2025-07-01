@@ -26,7 +26,7 @@ class ProductItemCard extends StatelessWidget {
       ),
       color: Colors.white,
       child: Container(
-        height: 220.h,
+        height: 230.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Colors.orange.withOpacity(0.3)),
@@ -103,7 +103,7 @@ class ProductItemCard extends StatelessWidget {
                                 : Image.asset('assets/images/logoPng.png', fit: BoxFit.contain),
                           ),
                         ),
-                       SizedBox(height: 16.h),
+                       SizedBox(height: 28.h),
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.orange.withOpacity(0.1),

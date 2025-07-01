@@ -14,7 +14,7 @@ class MostRequestedAppBar extends StatelessWidget implements PreferredSizeWidget
       automaticallyImplyLeading: false,
       actions: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 8.0.h),
+          padding: EdgeInsets.symmetric(horizontal: 16.0.w),
           child: SingleChildScrollView(
             child: Column(
               children: [
