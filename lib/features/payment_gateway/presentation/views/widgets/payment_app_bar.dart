@@ -16,7 +16,7 @@ class PaymentAppBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false,
       actions: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 8.0.h),
+          padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 6.0.h),
           child: SingleChildScrollView(
             child: Column(
               children: [

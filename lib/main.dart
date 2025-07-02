@@ -6,21 +6,44 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'core/app_router.dart';
 import 'features/auth/login/data/provider/login_provider.dart';
 import 'features/drawer_slider/controller/notification_provider.dart';
+import 'dart:developer';
+import 'features/order/presentation/controllers/order_provider.dart';
+
 
 String authToken = "";
 
-void main() async {
+Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences pref = await SharedPreferences.getInstance();
   authToken = pref.getString('token') ?? '';
-  // setupLocator();
+  
+  // Validate token if it exists
+  if (authToken.isNotEmpty) {
+    try {
+      // You might want to add a token validation API call here
+      // For now, we'll just check if it's not empty
+      if (authToken.isEmpty) {
+        await pref.remove('token');
+        authToken = '';
+      }
+    } catch (e) {
+      log('Error validating token: $e');
+      await pref.remove('token');
+      authToken = '';
+    }
+  }
+}
+
+void main() async {
+  await initializeApp();
+  
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => NotificationProvider()),
         ChangeNotifierProvider(create: (_) => LoginProvider()),
         ChangeNotifierProvider(create: (_) => RegisterProvider()),
-        // ChangeNotifierProvider(create: (context) => CounterProvider()),
+        ChangeNotifierProvider(create: (_) => OrderProvider()),
       ],
       child: const AwladKhedr(),
     ),
@@ -50,7 +73,9 @@ class AwladKhedr extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return child!;
                 }
-                return const Text('');
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
               },
             );
           },

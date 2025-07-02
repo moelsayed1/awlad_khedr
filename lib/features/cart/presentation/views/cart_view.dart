@@ -3,70 +3,34 @@ import 'package:awlad_khedr/core/main_layout.dart';
 import 'package:awlad_khedr/features/cart/presentation/views/widgets/cart_item.dart';
 import 'package:awlad_khedr/features/cart/presentation/views/widgets/custom_button_cart.dart';
 import 'package:awlad_khedr/features/payment_gateway/presentation/views/payment_view.dart';
-import 'package:awlad_khedr/features/products_screen/model/product_by_category_model.dart';
 import 'package:flutter/material.dart';
-import 'package:awlad_khedr/features/most_requested/data/model/top_rated_model.dart'
-    as top_rated;
+import 'package:awlad_khedr/features/most_requested/data/model/top_rated_model.dart' as top_rated;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:awlad_khedr/core/assets.dart';
 import 'package:awlad_khedr/features/drawer_slider/presentation/views/side_slider.dart';
 
 class CartViewPage extends StatefulWidget {
-  const CartViewPage({super.key});
+  final List<top_rated.Product> products;
+  final List<int> quantities;
+
+  const CartViewPage({
+    super.key,
+    required this.products,
+    required this.quantities,
+  });
 
   @override
   State<CartViewPage> createState() => _CartViewPageState();
 }
 
 class _CartViewPageState extends State<CartViewPage> {
-  // Example products, replace with your real data source
-  // In CartViewPage, update your example products like this:
-  final List<Product> products = [
-    Product(
-        productId: 1,
-        productName: 'بيبسي زيرو 1 لتر',
-        productPrice: '100',
-        qtyAvailable: 10,
-        minimumSoldQuantity: 6,
-        image: null,
-        imageUrl:
-            'https://vivendadocamarao.vtexassets.com/arquivos/ids/158341/PEPSI-ZERO-LATA-350ML.jpg?v=638055201699200000'), // Replace with a real URL
-    Product(
-        productId: 2,
-        productName: 'كوكا كولا علب',
-        productPrice: '80',
-        qtyAvailable: 10,
-        minimumSoldQuantity: 24,
-        image: null,
-        imageUrl:
-            'https://images.deliveryhero.io/image/talabat-nv/Blob_Images/OM1N90PR.jpg'), // Replace with a real URL
-    Product(
-        productId: 3,
-        productName: 'فانتا برتقال 2.5 لتر',
-        productPrice: '90',
-        qtyAvailable: 10,
-        minimumSoldQuantity: 4,
-        image: null,
-        imageUrl:
-            'https://assets.matjrah.store/images/1510/image/cache/catalog/productimage/2284a44d4a82f1dcadc106aef32c00bc7743-1000x1000.jpg'), // Replace with a real URL
-    Product(
-        productId: 4,
-        productName: 'سبرايت صغير',
-        productPrice: '85',
-        qtyAvailable: 10,
-        minimumSoldQuantity: 12,
-        image: null,
-        imageUrl:
-            'https://www.coca-cola.com/content/dam/onexp/xf/ar/product-images/ar_sprite_prod_sprite_750x750.jpg'), // Replace with a real URL
-  ];
-
   late List<int> _quantities;
   double _total = 0;
 
   @override
   void initState() {
     super.initState();
-    _quantities = List<int>.filled(products.length, 0); // <-- Start with zero
+    _quantities = List<int>.from(widget.quantities);
     _calculateTotal();
   }
 
@@ -79,18 +43,17 @@ class _CartViewPageState extends State<CartViewPage> {
 
   void _calculateTotal() {
     _total = 0;
-    for (int i = 0; i < products.length; i++) {
-      final price = double.tryParse(products[i].productPrice ?? '0') ?? 0;
+    for (int i = 0; i < widget.products.length; i++) {
+      final price = double.tryParse(widget.products[i].price ?? '0') ?? 0;
       _total += price * _quantities[i];
     }
   }
 
-  List<Product> get selectedProducts {
-    List<Product> selected = [];
-    for (int i = 0; i < products.length; i++) {
+  List<top_rated.Product> get selectedProducts {
+    List<top_rated.Product> selected = [];
+    for (int i = 0; i < widget.products.length; i++) {
       if (_quantities[i] > 0) {
-        // You may want to clone the product and add a quantity field if needed
-        selected.add(products[i]);
+        selected.add(widget.products[i]);
       }
     }
     return selected;
@@ -98,27 +61,17 @@ class _CartViewPageState extends State<CartViewPage> {
 
   List<int> get selectedQuantities {
     return [
-      for (int i = 0; i < products.length; i++)
+      for (int i = 0; i < widget.products.length; i++)
         if (_quantities[i] > 0) _quantities[i]
     ];
   }
 
-  // Convert cart products to the type expected by PaymentView
   List<top_rated.Product> get selectedProductsForPayment {
     List<top_rated.Product> selected = [];
-    for (int i = 0; i < products.length; i++) {
+    for (int i = 0; i < widget.products.length; i++) {
       if (_quantities[i] > 0) {
-        final p = products[i];
-        selected.add(
-          top_rated.Product(
-            productName: p.productName,
-            price: p.productPrice,
-            image: p.image,
-            imageUrl: p.imageUrl, productId: null, qtyAvailable: '',
-            minimumSoldQuantity: '',
-            // Add other fields as needed, or set to null/default if not available
-          ),
-        );
+        final p = widget.products[i];
+        selected.add(p);
       }
     }
     return selected;
@@ -134,7 +87,7 @@ class _CartViewPageState extends State<CartViewPage> {
           automaticallyImplyLeading: false,
           actions: const [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
                 'الاوردر',
                 style: TextStyle(
@@ -171,21 +124,42 @@ class _CartViewPageState extends State<CartViewPage> {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.all(16.0.r),
-                // This is the ListView that iterates and creates individual CartItem widgets
-                child: ListView.separated(
-                  itemCount: products.length,
-                  separatorBuilder: (context, index) => SizedBox(height: 15.h),
-                  itemBuilder: (context, index) {
-                    final product = products[index];
-                    final quantity = _quantities[index];
-                    return CartItem(
-                      product: product, // Pass single product
-                      quantity: quantity, // Pass single quantity
-                      index: index, // Pass the index
-                      onQuantityChanged: _onQuantityChanged,
-                    );
-                  },
-                ),
+                child: (widget.products.isEmpty || _quantities.every((q) => q == 0))
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.shopping_bag_outlined,
+                            size: 80.sp,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(height: 16.h),
+                          Text(
+                            'لا توجد منتجات في السلة',
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: Colors.grey,
+                              fontFamily: baseFont,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : ListView.separated(
+                      itemCount: widget.products.length,
+                      separatorBuilder: (context, index) => SizedBox(height: 15.h),
+                      itemBuilder: (context, index) {
+                        final product = widget.products[index];
+                        final quantity = _quantities[index];
+                        return CartItem(
+                          product: product, // Pass single product
+                          quantity: quantity, // Pass single quantity
+                          index: index, // Pass the index
+                          onQuantityChanged: _onQuantityChanged,
+                        );
+                      },
+                    ),
               ),
             ),
             // Bottom Total Section
@@ -224,7 +198,7 @@ class _CartViewPageState extends State<CartViewPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${_total.toInt()} ج.م ',
+                        '	${_total.toInt()} ج.م ',
                         style: TextStyle(
                           fontSize: 30.sp,
                           fontWeight: FontWeight.w400,
@@ -253,8 +227,7 @@ class _CartViewPageState extends State<CartViewPage> {
                         context,
                         MaterialPageRoute(
                           builder: (_) => PaymentView(
-                            products:
-                                selectedProductsForPayment, // Use the converted list
+                            products: selectedProductsForPayment,
                             total: _total,
                           ),
                         ),

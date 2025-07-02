@@ -2,8 +2,10 @@ import 'package:awlad_khedr/constant.dart';
 import 'package:awlad_khedr/core/assets.dart';
 import 'package:awlad_khedr/core/custom_button.dart';
 import 'package:awlad_khedr/core/main_layout.dart';
+import 'package:awlad_khedr/features/drawer_slider/presentation/views/side_slider.dart';
 import 'package:awlad_khedr/features/drawer_slider/presentation/views/widgets/popup_account_details.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -27,35 +29,27 @@ class _NotificationScreenState extends State<NotificationScreen> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          leading: InkWell(
-            onTap: () {
-              GoRouter.of(context).pop();
-            },
-            child: Row(
-              children: [
-                Image.asset(
-                  AssetsData.back,
-                  color: Colors.black,
+          leading: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 0),
+            child: Builder(
+              builder: (context) => IconButton(
+                icon: Image.asset(
+                  AssetsData.drawerIcon,
+                  height: 45,
+                  width: 45,
                 ),
-                const Text(
-                  'للخلف',
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                      fontFamily: baseFont,
-                      fontWeight: FontWeight.w500),
-                ),
-              ],
+                onPressed: () => Scaffold.of(context).openDrawer(),
+              ),
             ),
           ),
-          leadingWidth: 100,
-          actions: const [
+
+          actions: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.0),
+              padding: EdgeInsets.symmetric(horizontal: 12.0.w),
               child: Text(
                 'الاشعارات',
                 style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 20.sp,
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontFamily: baseFont),
@@ -63,8 +57,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
             )
           ],
         ),
+        drawer: const CustomDrawer(),
         body: ListView.builder(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0.r),
           itemCount: notifications.length,
           itemBuilder: (context, index) {
             final notification = notifications[index];
@@ -85,71 +80,117 @@ class NotificationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: Card(
-        color: Colors.white,
-        elevation: 8,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: ListTile(
-          leading: SizedBox(
-            height: 40,
-            width: 40,
-            child: Image.asset(
-              AssetsData.logoPng,
-              fit: BoxFit.contain,
-            ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 8.0.h),
+        child: Card(
+          color: Colors.white,
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.r),
+            side: BorderSide(color: Colors.orange.withOpacity(0.3)),
           ),
-          title: Text(
-            notification.orderDetails,
-            style: const TextStyle(
-                fontSize: 12,
-                fontFamily: baseFont,
-                color: Colors.black,
-                fontWeight: FontWeight.w700),
-          ),
-          subtitle: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(notification.status,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontFamily: baseFont,
-                  )),
-              const SizedBox(
-                width: 6,
-              ),
-              Text(notification.orderNumber,
-                  style: const TextStyle(color: Colors.black)),
-            ],
-          ),
-          trailing: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                notification.timeAgo,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontFamily: baseFont,
+          child: Padding(
+            padding: EdgeInsets.all(16.0.r),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      height: 60.h,
+                      width: 60.w,
+                      padding: EdgeInsets.all(8.r),
+                      decoration: BoxDecoration(
+                        color: Colors.orange.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: Image.asset(
+                        AssetsData.logoPng,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    SizedBox(width: 16.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            notification.orderDetails,
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontFamily: baseFont,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          SizedBox(height: 8.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                                decoration: BoxDecoration(
+                                  color: Colors.orange.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(8.r),
+                                ),
+                                child: Text(
+                                  notification.status,
+                                  style: TextStyle(
+                                    color: Colors.orange,
+                                    fontFamily: baseFont,
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 8.w),
+                              Text(
+                                notification.orderNumber,
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              CustomButton(
-                text: 'تفاصيل الاوردر',
-                color: darkOrange,
-                textColor: Colors.black,
-                fontSize: 8,
-                width: 80,
-                height: 16,
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return const OrderDetailsPopup();
-                    },
-                  );
-                },
-              ),
-            ],
+                SizedBox(height: 16.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      notification.timeAgo,
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontFamily: baseFont,
+                        fontSize: 14.sp,
+                      ),
+                    ),
+                    CustomButton(
+                      text: 'تفاصيل الاوردر',
+                      color: darkOrange,
+                      textColor: Colors.white,
+                      fontSize: 14.sp,
+                      width: 120.w,
+                      height: 28.h,
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const OrderDetailsPopup();
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../../../core/app_router.dart';
 import '../../data/provider/login_provider.dart';
+import 'dart:developer';
+
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -143,8 +145,8 @@ class _LoginViewState extends State<LoginView> {
                         ? const CircularProgressIndicator()
                         : CustomButton(
                         onTap: () async {
-                          print("Username: ${_userNameController.text}");
-                          print("Password: ${_passwordController.text}");
+                          log("Username: ${_userNameController.text}");
+                          log("Password: ${_passwordController.text}");
 
                           if (_userNameController.text.isEmpty ||
                               _passwordController.text.isEmpty) {
@@ -160,7 +162,7 @@ class _LoginViewState extends State<LoginView> {
                             _passwordController.text.trim(),
                           );
                           if (loginProvider.token != null) {
-                            print("Login successful: ${loginProvider.token}");
+                            log("Login successful: ${loginProvider.token}");
                             GoRouter.of(context).push(AppRouter.kHomeScreen);
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(

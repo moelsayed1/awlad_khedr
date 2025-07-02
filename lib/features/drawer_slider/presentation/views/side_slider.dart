@@ -3,6 +3,7 @@ import 'package:awlad_khedr/core/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'dart:developer';
 
 import '../../../../core/app_router.dart';
 import '../../../auth/login/data/provider/login_provider.dart';
@@ -200,7 +201,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     builder: (BuildContext context) => AlertDialog(
                       backgroundColor: Colors.white,
                       title: Image.asset(
-                        AssetsData.callCenter,
+                        AssetsData.callCenter2,
                         width: 100,
                         height: 100,
                       ),
@@ -218,7 +219,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 ),
               ),
               SizedBox(
-                height: MediaQuery.sizeOf(context).height * .35,
+                height: MediaQuery.sizeOf(context).height * .42,
               ),
               Directionality(
                 textDirection: TextDirection.rtl,
@@ -242,7 +243,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     loginProvider.logout();
 
                     GoRouter.of(context).pushReplacement(AppRouter.kLoginView);
-                    print("TOOOOkEEEEEEEN${loginProvider.token.toString()}");
+                    log("TOOOOkEEEEEEEN${loginProvider.token.toString()}");
                   },
                 ),
               ),

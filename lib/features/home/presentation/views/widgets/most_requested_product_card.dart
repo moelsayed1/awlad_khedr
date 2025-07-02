@@ -21,7 +21,23 @@ class MostRequestedProductCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ... (image section) ...
+          Container(
+            width: double.infinity,
+            height: MediaQuery.sizeOf(context).height * .15,
+            color: Colors.transparent,
+            child: product.imageUrl != null
+                ? Image.network(
+                    product.imageUrl ?? 'https://img4cdn.haraj.com.sa/userfiles30/2022-08-23/800x689-1_-GO__MTY2MTI4MDM2MzM5OTk0NDE1OTEwNQ.jpg',
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset('assets/images/logoPng.png', fit: BoxFit.cover);
+                    },
+                  )
+                : Image.asset(
+                    AssetsData.callCenter,
+                    fit: BoxFit.cover,
+                  ),
+          ),
           Padding(
             padding: EdgeInsets.all(8.w),
             child: Column(

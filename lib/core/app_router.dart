@@ -6,6 +6,7 @@ import 'package:awlad_khedr/features/notification/presentaion/views/notification
 import 'package:awlad_khedr/features/home/presentation/views/home_view.dart';
 import 'package:awlad_khedr/features/onboarding/presentation/views/on_boarding.dart';
 import 'package:awlad_khedr/features/products_screen/presentation/views/products_screen_view.dart';
+import 'package:awlad_khedr/features/payment_gateway/presentation/views/payment_view.dart';
 import 'package:awlad_khedr/main.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -19,6 +20,9 @@ import '../features/cart/presentation/views/cart_view.dart';
 import '../features/drawer_slider/presentation/views/widgets/my_accounts.dart';
 import '../features/most_requested/presentation/views/most_requested_views.dart';
 import '../features/order/presentation/views/orders_view.dart';
+import 'package:provider/provider.dart';
+import 'package:awlad_khedr/features/home/presentation/controllers/category_controller.dart';
+import 'package:awlad_khedr/features/home/data/repositories/category_repository.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -73,11 +77,17 @@ abstract class AppRouter {
       path: kHomeScreen,
       builder: (context, state) => const HomeScreenView(),
     ),
-    // GoRoute(
-    //   parentNavigatorKey: _rootNavigatorKey,
-    //   path: kPaymentView,
-    //   builder: (context, state) => const PaymentView(products: products, total: total),
-    // ),
+    GoRoute(
+      parentNavigatorKey: _rootNavigatorKey,
+      path: kPaymentView,
+      builder: (context, state) {
+        final Map<String, dynamic> args = state.extra as Map<String, dynamic>;
+        return PaymentView(
+          products: args['products'],
+          total: args['total'],
+        );
+      },
+    ),
     GoRoute(
       parentNavigatorKey: _rootNavigatorKey,
       path: kMyInformation,
@@ -102,11 +112,20 @@ abstract class AppRouter {
     ),
     GoRoute(
       path: kCategoriesPage, // <--- NEW ROUTE
-      builder: (context, state) => const CategoriesPage(), // <--- POINTS TO YOUR NEW PAGE
+      builder: (context, state) => ChangeNotifierProvider(
+        create: (_) => CategoryController(CategoryRepository()),
+        child: const CategoriesPage(),
+      ),
     ),
     GoRoute(
       path: kCartViewPage,
-      builder: (context, state) =>  const CartViewPage(),
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>?;
+        return CartViewPage(
+          products: args?['products'] ?? [],
+          quantities: args?['quantities'] ?? [],
+        );
+      },
     ),
     GoRoute(
       path: kOrdersViewPage,

@@ -1,6 +1,6 @@
-import 'package:awlad_khedr/core/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:awlad_khedr/constant.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SearchWidget extends StatefulWidget {
   final TextEditingController? controller;
@@ -24,11 +24,11 @@ class _SearchWidgetState extends State<SearchWidget> {
         onChanged: widget.onChanged,
         textAlign: TextAlign.right,
         textDirection: TextDirection.rtl,
-        style: const TextStyle(
+        style: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.w500,
           fontFamily: 'Tajawal',
-          fontSize: 14,
+          fontSize: 16.sp,
         ),
         decoration: InputDecoration(
           hintText: 'أبحث عن منتجاتك',

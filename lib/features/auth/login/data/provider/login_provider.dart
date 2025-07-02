@@ -15,7 +15,7 @@
 //   /// Login and save token
 //   Future<void> login(String userName, String password) async {
 //     if (userName.isEmpty || password.isEmpty) {
-//       print('Username and password are required.');
+//       log('Username and password are required.');
 //       return;
 //     }
 //
@@ -27,12 +27,12 @@
 //       if (fetchedToken != null) {
 //         _token = fetchedToken;
 //         await saveToken(fetchedToken);
-//         print('Token: $_token');
+//         log('Token: $_token');
 //       } else {
-//         print('Failed to log in. Token is null.');
+//         log('Failed to log in. Token is null.');
 //       }
 //     } catch (error) {
-//       print('Error during login: $error');
+//       log('Error during login: $error');
 //     }
 //
 //     _isLoading = false;
@@ -42,13 +42,13 @@
 //   /// Save token to secure storage
 //   Future<void> saveToken(String token) async {
 //     await _secureStorage.write(key: 'token', value: token);
-//     print('Token securely saved: $token');
+//     log('Token securely saved: $token');
 //   }
 //
 //   /// Load token from secure storage
 //   Future<void> loadToken() async {
 //     _token = await _secureStorage.read(key: 'token');
-//     print('Token loaded securely: $_token');
+//     log('Token loaded securely: $_token');
 //     notifyListeners();
 //   }
 //
@@ -56,7 +56,7 @@
 //   Future<void> logout() async {
 //     _token = null;
 //     await _secureStorage.delete(key: 'token');
-//     print('Token securely removed from storage.');
+//     log('Token securely removed from storage.');
 //     notifyListeners();
 //   }
 // }
@@ -64,20 +64,20 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/login_service.dart';
+import 'dart:developer';
+
 
 class LoginProvider extends ChangeNotifier {
   String? _token;
   bool _isLoading = false;
-
   final LoginService _loginService = LoginService();
 
   String? get token => _token;
   bool get isLoading => _isLoading;
 
-  /// Login and save token
   Future<void> login(String userName, String password) async {
     if (userName.isEmpty || password.isEmpty) {
-      print('Username and password are required.');
+      log('Username and password are required.');
       return;
     }
 
@@ -89,39 +89,65 @@ class LoginProvider extends ChangeNotifier {
       if (fetchedToken != null) {
         _token = fetchedToken;
         await saveToken(fetchedToken);
-        print('Token: $_token');
+        log('Token saved successfully: $_token');
       } else {
-        print('Failed to log in. Token is null.');
+        log('Failed to log in. Token is null.');
+        _token = null;
+        await clearToken();
       }
     } catch (error) {
-      print('Error during login: $error');
+      log('Error during login: $error');
+      _token = null;
+      await clearToken();
     }
 
     _isLoading = false;
     notifyListeners();
   }
 
-  /// Save token to SharedPreferences
   Future<void> saveToken(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('token', token);
-    print('Token saved using SharedPreferences: $token');
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', token);
+      log('Token saved to SharedPreferences: $token');
+    } catch (e) {
+      log('Error saving token: $e');
+    }
   }
 
-  // Load token from SharedPreferences
   Future<void> loadToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    _token = prefs.getString('token');
-    print('Token loaded from SharedPreferences: $_token');
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      _token = prefs.getString('token');
+      log('Token loaded from SharedPreferences: $_token');
+      notifyListeners();
+    } catch (e) {
+      log('Error loading token: $e');
+      _token = null;
+    }
+  }
+
+  Future<void> clearToken() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('token');
+      _token = null;
+      log('Token cleared from SharedPreferences');
+      notifyListeners();
+    } catch (e) {
+      log('Error clearing token: $e');
+    }
+  }
+
+  Future<void> logout() async {
+    await clearToken();
     notifyListeners();
   }
 
-  /// Log out the user and clear token
-  Future<void> logout() async {
-    _token = null;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('token');
-    print('Token removed from SharedPreferences.');
-    notifyListeners();
+  Future<bool> isLoggedIn() async {
+    if (_token == null) {
+      await loadToken();
+    }
+    return _token != null && _token!.isNotEmpty;
   }
 }

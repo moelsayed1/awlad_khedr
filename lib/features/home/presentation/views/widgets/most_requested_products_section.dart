@@ -1,5 +1,7 @@
 import 'package:awlad_khedr/constant.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 // Import the specific Product model from top_rated_model.dart with an alias
 import 'package:awlad_khedr/features/most_requested/data/model/top_rated_model.dart' as trm; // <--- Make sure this import is correct and aliased
@@ -30,7 +32,7 @@ class MostRequestedProductsSection extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  print('Navigate to see all most requested products');
+                  log('Navigate to see all most requested products');
                 },
                 child: Text(
                   'المزيد',

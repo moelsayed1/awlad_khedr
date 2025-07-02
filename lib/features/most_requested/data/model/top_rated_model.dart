@@ -26,7 +26,7 @@ class Product {
       productName: json['product_name'] as String?,
       price: json['price'],
       qtyAvailable: json['qty_available'],
-      minimumSoldQuantity: json['minimum_sold_quantity'] as String?,
+      minimumSoldQuantity: json['minimum_sold_quantity']?.toString(),
       image: json['image'] as String?,
       imageUrl: json['image_url'] as String?,
       categoryName: json['category_name'] as String?,

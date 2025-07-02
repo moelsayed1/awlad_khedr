@@ -5,6 +5,7 @@ import 'package:awlad_khedr/core/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'dart:developer';
 
 import '../../../../../core/app_router.dart';
 import '../../data/provider/register_provider.dart';
@@ -266,7 +267,7 @@ class _RegisterViewState extends State<RegisterView> {
                             }else{
                               GoRouter.of(context)
                                   .push(AppRouter.kReservationPage);
-                              print(
+                              log(
                                   'theeeeee Data Savedd${registrationProvider.saveRegisterData.toString()}');
                             }
 
