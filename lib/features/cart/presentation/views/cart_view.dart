@@ -3,7 +3,6 @@ import 'package:awlad_khedr/core/main_layout.dart';
 import 'package:awlad_khedr/features/cart/presentation/views/widgets/cart_item.dart';
 import 'package:awlad_khedr/features/cart/presentation/views/widgets/custom_button_cart.dart';
 import 'package:awlad_khedr/features/payment_gateway/presentation/views/payment_view.dart';
-import 'package:awlad_khedr/features/products_screen/model/product_by_category_model.dart';
 import 'package:flutter/material.dart';
 import 'package:awlad_khedr/features/most_requested/data/model/top_rated_model.dart' as top_rated;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,10 +14,10 @@ class CartViewPage extends StatefulWidget {
   final List<int> quantities;
 
   const CartViewPage({
-    Key? key,
+    super.key,
     required this.products,
     required this.quantities,
-  }) : super(key: key);
+  });
 
   @override
   State<CartViewPage> createState() => _CartViewPageState();

@@ -7,6 +7,7 @@ import 'core/app_router.dart';
 import 'features/auth/login/data/provider/login_provider.dart';
 import 'features/drawer_slider/controller/notification_provider.dart';
 import 'dart:developer';
+import 'features/order/presentation/controllers/order_provider.dart';
 
 
 String authToken = "";
@@ -42,6 +43,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => NotificationProvider()),
         ChangeNotifierProvider(create: (_) => LoginProvider()),
         ChangeNotifierProvider(create: (_) => RegisterProvider()),
+        ChangeNotifierProvider(create: (_) => OrderProvider()),
       ],
       child: const AwladKhedr(),
     ),

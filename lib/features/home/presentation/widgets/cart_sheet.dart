@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:awlad_khedr/constant.dart';
 import 'package:awlad_khedr/features/most_requested/data/model/top_rated_model.dart' as top_rated;
-import 'package:awlad_khedr/features/payment_gateway/presentation/views/payment_view.dart';
 import 'package:awlad_khedr/core/theme/app_colors.dart';
-import 'package:awlad_khedr/features/products_screen/model/product_by_category_model.dart' as product_model;
 
 class CartSheet extends StatelessWidget {
   final Map<top_rated.Product, int> cart;

@@ -27,15 +27,6 @@ class _MostRequestedPageState extends State<MostRequestedPage> {
   final Map<String, int> _productQuantities = {}; // Key: product ID or unique identifier, Value: quantity
   final Map<Product, int> _cart = {}; // Add cart map
 
-  // final List<String> _categories = [
-  //   'الكل',
-  //   'المشروبات',
-  //   'منتجات البان',
-  //   'حلويات',
-  //   // Add more categories as needed
-  // ];
-  // String _selectedCategory = 'الكل'; // Initial selected category
-
   final TextEditingController _searchController = TextEditingController();
   List<Product> _filteredProducts = [];
 
@@ -65,16 +56,6 @@ class _MostRequestedPageState extends State<MostRequestedPage> {
 
     List<Product> tempProducts = topRatedItem!.products;
 
-    // Filter by category
-    // if (_selectedCategory != 'الكل') {
-    //   tempProducts = tempProducts.where((p) {
-    //     // Now, 'p.categoryName' should exist.
-    //     // Convert both to lowercase for case-insensitive comparison.
-    //     return p.categoryName != null && p.categoryName!.toLowerCase() == _selectedCategory.toLowerCase();
-    //   }).toList();
-    // }
-
-    // --- Search Query Filtering Logic (already correct) ---
     if (_searchController.text.isNotEmpty) {
       final query = _searchController.text.toLowerCase();
       tempProducts = tempProducts.where((product) {
@@ -93,13 +74,12 @@ class _MostRequestedPageState extends State<MostRequestedPage> {
       final response = await http.get(uriToSend, headers: {"Authorization" : "Bearer $authToken"});
       if (response.statusCode == 200) {
         topRatedItem = TopRatedModel.fromJson(jsonDecode(response.body));
-        // Initialize quantities for each product to 0 using a unique identifier (e.g., product name or ID)
         if (topRatedItem != null && topRatedItem!.products.isNotEmpty) {
           for (var product in topRatedItem!.products) {
-            _productQuantities[product.productName!] = 0; // Using product name as key for simplicity
+            _productQuantities[product.productName!] = 0;
           }
         }
-        _filterProducts(); // Apply initial filters (if any)
+        _filterProducts();
       } else {
         debugPrint('Failed to load top rated items: ${response.statusCode.toString()}');
       }
@@ -115,6 +95,20 @@ class _MostRequestedPageState extends State<MostRequestedPage> {
   void _onQuantityChanged(String productId, int newQuantity) {
     setState(() {
       _productQuantities[productId] = newQuantity;
+      
+      // Find the product with this productId
+      final product = _filteredProducts.firstWhere(
+        (p) => p.productName == productId,
+        orElse: () => throw Exception('Product not found'),
+      );
+
+      if (newQuantity == 0) {
+        // Remove from cart if quantity is 0
+        _cart.remove(product);
+      } else {
+        // Update cart quantity
+        _cart[product] = newQuantity;
+      }
     });
   }
 
@@ -141,21 +135,10 @@ class _MostRequestedPageState extends State<MostRequestedPage> {
             children: [
               SearchWidget(controller: _searchController),
               const SizedBox(height: 8),
-              // CategoryFilterBar(
-              //   categories: _categories,
-              //   selectedCategory: _selectedCategory,
-              //   onCategorySelected: (category) {
-              //     setState(() {
-              //       _selectedCategory = category;
-              //     });
-              //     _filterProducts();
-              //   },
-              //),
               const SizedBox(height: 15),
               isListLoaded
                   ? (topRatedItem != null && _filteredProducts.isNotEmpty
                   ? ListView.separated(
-                // MODIFIED LINE HERE: Limit itemCount to a maximum of 10
                 itemCount: min(_filteredProducts.length, 10),
                 physics: const NeverScrollableScrollPhysics(),
                 separatorBuilder: (BuildContext context, int index) =>
@@ -226,31 +209,3 @@ class _MostRequestedPageState extends State<MostRequestedPage> {
     );
   }
 }
-
-// --- Modified SearchWidget (if you want to make it reusable with a controller) ---
-// You might need to adjust your existing SearchWidget or create a new one.
-
-// Assuming your original SearchWidget looked something like this:
-/*
-class SearchWidget extends StatelessWidget {
-  const SearchWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: const TextField(
-        decoration: InputDecoration(
-          hintText: 'ابحث عن منتجاتك',
-          border: InputBorder.none,
-          icon: Icon(Icons.search),
-        ),
-      ),
-    );
-  }
-}
-*/

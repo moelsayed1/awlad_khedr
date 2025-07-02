@@ -4,6 +4,11 @@ import 'package:awlad_khedr/features/payment_gateway/presentation/views/widgets/
 import 'package:awlad_khedr/features/payment_gateway/presentation/views/widgets/payment_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:awlad_khedr/features/order/data/model/order_model.dart';
+import 'package:awlad_khedr/features/order/presentation/controllers/order_provider.dart';
+import 'package:go_router/go_router.dart';
+import 'package:awlad_khedr/core/app_router.dart';
 
 class PaymentView extends StatelessWidget {
   final List<Product> products;
@@ -146,7 +151,26 @@ class PaymentView extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 24.h),
-              PaymentForm(onPaymentSuccess: onPaymentSuccess),
+              PaymentForm(
+                onPaymentSuccess: () {
+                  final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+                  final order = Order(
+                    id: UniqueKey().toString(),
+                    date: DateTime.now(),
+                    products: products,
+                    total: total,
+                    status: 'جاري الاستلام',
+                  );
+                  orderProvider.addOrder(order);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('تم إرسال الطلب بنجاح!'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                  GoRouter.of(context).go(AppRouter.kOrdersViewPage);
+                },
+              ),
             ],
           ),
         ),

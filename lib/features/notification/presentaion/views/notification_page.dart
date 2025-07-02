@@ -2,6 +2,7 @@ import 'package:awlad_khedr/constant.dart';
 import 'package:awlad_khedr/core/assets.dart';
 import 'package:awlad_khedr/core/custom_button.dart';
 import 'package:awlad_khedr/core/main_layout.dart';
+import 'package:awlad_khedr/features/drawer_slider/presentation/views/side_slider.dart';
 import 'package:awlad_khedr/features/drawer_slider/presentation/views/widgets/popup_account_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,33 +29,20 @@ class _NotificationScreenState extends State<NotificationScreen> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          leading: InkWell(
-            onTap: () {
-              GoRouter.of(context).pop();
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 14.w),
-              child: Row(
-                children: [
-                  Image.asset(
-                    AssetsData.back,
-                    color: Colors.black,
-                    height: 24.h,
-                    width: 24.w,
-                  ),
-                  Text(
-                    'للخلف',
-                    style: TextStyle(
-                        fontSize: 18.sp,
-                        color: Colors.black,
-                        fontFamily: baseFont,
-                        fontWeight: FontWeight.w500),
-                  ),
-                ],
+          leading: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 0),
+            child: Builder(
+              builder: (context) => IconButton(
+                icon: Image.asset(
+                  AssetsData.drawerIcon,
+                  height: 45,
+                  width: 45,
+                ),
+                onPressed: () => Scaffold.of(context).openDrawer(),
               ),
             ),
           ),
-          leadingWidth: 100.w,
+
           actions: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 12.0.w),
@@ -69,6 +57,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             )
           ],
         ),
+        drawer: const CustomDrawer(),
         body: ListView.builder(
           padding: EdgeInsets.all(16.0.r),
           itemCount: notifications.length,

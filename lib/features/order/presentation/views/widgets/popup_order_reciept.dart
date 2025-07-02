@@ -1,15 +1,18 @@
 import 'package:awlad_khedr/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:awlad_khedr/features/order/data/model/order_model.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomButtonReceipt extends StatelessWidget {
-  const CustomButtonReceipt({super.key});
+  final Order order;
+  const CustomButtonReceipt({super.key, required this.order});
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
         width: double.infinity,
-        height: 44,
+        height: 32.h,
         child: ElevatedButton(
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.all(mainColor),
@@ -18,7 +21,7 @@ class CustomButtonReceipt extends StatelessWidget {
             showDialog(
               context: context,
               builder: (BuildContext context) {
-                return const ReceiptOrderDetails();
+                return ReceiptOrderDetails(order: order);
               },
             );
           },
@@ -37,7 +40,8 @@ class CustomButtonReceipt extends StatelessWidget {
 }
 
 class ReceiptOrderDetails extends StatelessWidget {
-  const ReceiptOrderDetails({super.key});
+  final Order order;
+  const ReceiptOrderDetails({super.key, required this.order});
 
   Widget _buildOrderItem(String name, String price) {
     return Padding(
@@ -100,18 +104,18 @@ class ReceiptOrderDetails extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '3000 ج,م',
-                  style: TextStyle(
+                  '${order.total} ج,م',
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
                 ),
-                Text(
+                const Text(
                   'اجمالي الفاتورة',
                   style: TextStyle(
                     fontSize: 18,
@@ -119,18 +123,14 @@ class ReceiptOrderDetails extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-
               ],
             ),
             const SizedBox(height: 8),
-            Column(
-              children: [
-                _buildOrderItem('خصم', '0.00 ج,م',),
-                _buildOrderItem('مجموع السعر', '2.924.39 ج,م', ),
-                _buildOrderItem('مجموع السعر', '30.71 ج,م',),
-                _buildOrderItem('طريقة الدفع', 'دفع الاجل',),
-              ],
-            ),
+            ...order.products.map((product) => _buildOrderItem(
+              product.productName ?? '',
+              '${product.price} ج,م',
+            )),
+            _buildOrderItem('طريقة الدفع', 'دفع الاجل'),
           ],
         ),
       ),

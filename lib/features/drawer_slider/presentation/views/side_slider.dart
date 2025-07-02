@@ -201,7 +201,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     builder: (BuildContext context) => AlertDialog(
                       backgroundColor: Colors.white,
                       title: Image.asset(
-                        AssetsData.callCenter,
+                        AssetsData.callCenter2,
                         width: 100,
                         height: 100,
                       ),

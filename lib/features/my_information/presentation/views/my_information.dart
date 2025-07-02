@@ -1,6 +1,8 @@
 import 'package:awlad_khedr/core/custom_text_field.dart';
 import 'package:awlad_khedr/core/main_layout.dart';
+import 'package:awlad_khedr/features/drawer_slider/presentation/views/side_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../constant.dart';
 import '../../../../core/assets.dart';
@@ -15,26 +17,19 @@ class MyInformation extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          leading:InkWell(
-            onTap: (){GoRouter.of(context).pop();},
-            child: Row(
-              children: [
-                Image.asset(
-                  AssetsData.back,
-                  color: Colors.black,
+          leading: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 0),
+            child: Builder(
+              builder: (context) => IconButton(
+                icon: Image.asset(
+                  AssetsData.drawerIcon,
+                  height: 45,
+                  width: 45,
                 ),
-                const Text(
-                  'للخلف',
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                      fontFamily: baseFont,
-                      fontWeight: FontWeight.w500),
-                ),
-              ],
+                onPressed: () => Scaffold.of(context).openDrawer(),
+              ),
             ),
-          ) ,
-          leadingWidth: 100,
+          ),
           actions: const [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 12.0),
@@ -42,14 +37,15 @@ class MyInformation extends StatelessWidget {
             )
           ],
         ),
+        drawer: const CustomDrawer(),
         body:  const Padding(
           padding:  EdgeInsets.all(18.0),
           child:  SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text('الاسم'
-                ,style: TextStyle(
+                Text('الاسم',
+                style: TextStyle(
                     fontSize: 18,
                     fontFamily: baseFont,
                     fontWeight: FontWeight.w700,

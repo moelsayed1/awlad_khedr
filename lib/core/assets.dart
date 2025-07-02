@@ -12,6 +12,7 @@ class AssetsData {
   static const alert = 'assets/images/alert.png';
   static const logout = 'assets/images/logout.png';
   static const callCenter = 'assets/images/call2.png';
+  static const callCenter2 = 'assets/images/call_center.png';
   static const drawerIcon = 'assets/images/Top.png';
   static const card = 'assets/images/card.png';
   static const card2 = 'assets/images/card2.jpg';
