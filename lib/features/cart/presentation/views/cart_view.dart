@@ -124,21 +124,42 @@ class _CartViewPageState extends State<CartViewPage> {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.all(16.0.r),
-                // This is the ListView that iterates and creates individual CartItem widgets
-                child: ListView.separated(
-                  itemCount: widget.products.length,
-                  separatorBuilder: (context, index) => SizedBox(height: 15.h),
-                  itemBuilder: (context, index) {
-                    final product = widget.products[index];
-                    final quantity = _quantities[index];
-                    return CartItem(
-                      product: product, // Pass single product
-                      quantity: quantity, // Pass single quantity
-                      index: index, // Pass the index
-                      onQuantityChanged: _onQuantityChanged,
-                    );
-                  },
-                ),
+                child: (widget.products.isEmpty || _quantities.every((q) => q == 0))
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.shopping_bag_outlined,
+                            size: 80.sp,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(height: 16.h),
+                          Text(
+                            'لا توجد منتجات في السلة',
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: Colors.grey,
+                              fontFamily: baseFont,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : ListView.separated(
+                      itemCount: widget.products.length,
+                      separatorBuilder: (context, index) => SizedBox(height: 15.h),
+                      itemBuilder: (context, index) {
+                        final product = widget.products[index];
+                        final quantity = _quantities[index];
+                        return CartItem(
+                          product: product, // Pass single product
+                          quantity: quantity, // Pass single quantity
+                          index: index, // Pass the index
+                          onQuantityChanged: _onQuantityChanged,
+                        );
+                      },
+                    ),
               ),
             ),
             // Bottom Total Section
