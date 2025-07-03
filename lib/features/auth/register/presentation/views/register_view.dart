@@ -3,6 +3,7 @@ import 'package:awlad_khedr/core/assets.dart';
 import 'package:awlad_khedr/core/custom_button.dart';
 import 'package:awlad_khedr/core/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'dart:developer';
@@ -37,8 +38,8 @@ class _RegisterViewState extends State<RegisterView> {
           child: Stack(
             children: [
               Positioned(
-                top: -130,
-                right: -70,
+                top: -130.h,
+                right: -70.h,
                 child: Container(
                   width: 350,
                   height: 350,
@@ -53,7 +54,7 @@ class _RegisterViewState extends State<RegisterView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    const SizedBox(height: 100),
+                   SizedBox(height: 40.h),
                     InkWell(
                       onTap: () {
                         GoRouter.of(context).pop();
@@ -70,12 +71,12 @@ class _RegisterViewState extends State<RegisterView> {
                                 fontSize: 18,
                                 color: Colors.black,
                                 fontFamily: baseFont,
-                                fontWeight: FontWeight.w500),
+                                fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 30),
+                   SizedBox(height: 45.h),
                     const Text(
                       'سجل الأن',
                       textDirection: TextDirection.rtl,
@@ -92,8 +93,8 @@ class _RegisterViewState extends State<RegisterView> {
                       indent: 230,
                       color: Colors.black45,
                     ),
-                    const SizedBox(
-                      height: 42,
+                   SizedBox(
+                      height: 25.h,
                     ),
                     const Text(
                       'الأسم ',
@@ -244,8 +245,8 @@ class _RegisterViewState extends State<RegisterView> {
                         return null;
                       },
                     ),
-                    const SizedBox(
-                      height: 72,
+                   SizedBox(
+                      height: 32.h,
                     ),
                     Center(
                       child: CustomButton(

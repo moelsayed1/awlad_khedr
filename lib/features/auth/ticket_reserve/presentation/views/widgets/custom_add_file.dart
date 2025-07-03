@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomAddFile extends StatefulWidget {
   final Function(File) onFilePicked;
@@ -32,7 +33,7 @@ class _CustomAddFileState extends State<CustomAddFile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 30,
+      height: 30.h,
       padding: const EdgeInsets.only(left: 16),
       decoration: BoxDecoration(
         color: Colors.grey[200],
@@ -46,14 +47,17 @@ class _CustomAddFileState extends State<CustomAddFile> {
             style: const TextStyle(fontSize: 14, color: Colors.black),
           ),
           const Spacer(),
-          ElevatedButton(
-            style: const ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll(Color(0xffBF964A)),
-            ),
-            onPressed: pickFile,
-            child: const Text(
-              'إرفاق الملف',
-              style: TextStyle(color: Colors.black),
+          SizedBox(
+            width: 100.w,
+            child: ElevatedButton(
+              style: const ButtonStyle(
+                backgroundColor: WidgetStatePropertyAll(Color(0xffBF964A)),
+              ),
+              onPressed: pickFile,
+              child: const Text(
+                'إرفاق الملف',
+                style: TextStyle(color: Colors.black),
+              ),
             ),
           ),
         ],
