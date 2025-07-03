@@ -5,6 +5,7 @@ import 'package:awlad_khedr/core/custom_button.dart';
 import 'package:awlad_khedr/core/custom_text_field.dart';
 import 'package:awlad_khedr/features/auth/ticket_reserve/presentation/views/widgets/custom_add_file.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -34,8 +35,8 @@ class _ReservationPageState extends State<ReservationPage> {
           child: Stack(
             children: [
               Positioned(
-                top: -130,
-                right: -70,
+                top: -130.h,
+                right: -70.h,
                 child: Container(
                   width: 350,
                   height: 350,
@@ -50,7 +51,7 @@ class _ReservationPageState extends State<ReservationPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    const SizedBox(height: 80),
+                   SizedBox(height: 28.h),
                     InkWell(
                       onTap: () {
                         GoRouter.of(context).pop();
@@ -72,7 +73,7 @@ class _ReservationPageState extends State<ReservationPage> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 30),
+                   SizedBox(height: 40.h),
                     const Text(
                       'أكمل التسجيل',
                       textDirection: TextDirection.rtl,
@@ -89,8 +90,8 @@ class _ReservationPageState extends State<ReservationPage> {
                       indent: 230,
                       color: Colors.black45,
                     ),
-                    const SizedBox(
-                      height: 42,
+                   SizedBox(
+                      height: 18.h,
                     ),
                     const Text(
                       'رقم التليفون',
@@ -100,16 +101,16 @@ class _ReservationPageState extends State<ReservationPage> {
                           color: Colors.black,
                           fontFamily: baseFont),
                     ),
-                    const SizedBox(
-                      height: 14,
+                   SizedBox(
+                      height: 8.h,
                     ),
                     CustomTextField(
                       controller: _phoneController,
                       hintText: '0102******',
                       inputType: TextInputType.number,
                     ),
-                    const SizedBox(
-                      height: 14,
+                     SizedBox(
+                      height: 8.h,
                     ),
                     const Text(
                       'عنوان الماركت',
@@ -119,8 +120,8 @@ class _ReservationPageState extends State<ReservationPage> {
                           color: Colors.black,
                           fontFamily: baseFont),
                     ),
-                    const SizedBox(
-                      height: 14,
+                     SizedBox(
+                      height: 8.h,
                     ),
                     CustomTextField(
                       controller: _addressController,
@@ -155,16 +156,16 @@ class _ReservationPageState extends State<ReservationPage> {
                           color: Colors.black,
                           fontFamily: baseFont),
                     ),
-                    const SizedBox(
-                      height: 14,
+                   SizedBox(
+                      height: 12.h,
                     ),
                     CustomAddFile(
                       onFilePicked: (file) {
                         registerProvider.saveFiles(marketImage: file);
                       },
                     ),
-                    const SizedBox(
-                      height: 22,
+                     SizedBox(
+                      height: 12.h,
                     ),
                     const Text(
                       'سجل التجاري',
@@ -174,16 +175,16 @@ class _ReservationPageState extends State<ReservationPage> {
                           color: Colors.black,
                           fontFamily: baseFont),
                     ),
-                    const SizedBox(
-                      height: 14,
+                   SizedBox(
+                      height: 12.h,
                     ),
                     CustomAddFile(
                       onFilePicked: (file) {
                         registerProvider.saveFiles(commercialRegister: file);
                       },
                     ),
-                    const SizedBox(
-                      height: 22,
+                   SizedBox(
+                      height: 12.h,
                     ),
                     const Text(
                       'بطاقة ضربيبة',
@@ -193,15 +194,15 @@ class _ReservationPageState extends State<ReservationPage> {
                           color: Colors.black,
                           fontFamily: baseFont),
                     ),
-                    const SizedBox(
-                      height: 14,
+                   SizedBox(
+                      height: 14.h,
                     ),
                     CustomAddFile(
                       onFilePicked: (file) {
                         registerProvider.saveFiles(taxCard: file);
                       },
                     ),
-
+                    SizedBox(height: 8.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -222,8 +223,8 @@ class _ReservationPageState extends State<ReservationPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 42,
+                     SizedBox(
+                      height: 24.h,
                     ),
                     Center(
                       child: CustomButton(

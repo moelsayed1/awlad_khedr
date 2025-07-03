@@ -6,7 +6,7 @@ const darkOrange  = Color(0xffFC6E2A);
 const deepRed  = Color(0xff591712);
 const kBrown  = Color(0xffC29500);
 const blueHawai  = Color(0xff63B4FF);
-const brownDark  = Color(0xffA24D19);
+const brownDark  = Color(0xffB58938);
 
 const baseFont = 'GE Dinar One';
 
@@ -16,6 +16,9 @@ class APIConstant {
   static const BASE_URL = "https://erp.khedrsons.com";
   static const REGISTRER_USER = "$BASE_URL/api/user/register";
   static const LOGIN_USER = "$BASE_URL/api/login";
+  static const SEND_OTP = "$BASE_URL/api/send-otp";
+  static const VERIFY_OTP = "$BASE_URL/api/send-verification-email";
+  static const RESET_PASSWORD = "$BASE_URL/api/reset-password";
   static const GET_ALL_PRODUCTS = "$BASE_URL/api/products";
   static const GET_ALL_PRODUCTS_BY_CATEGORY = "$BASE_URL/api/category/products";
   static const GET_TOP_RATED_ITEMS = "$BASE_URL/api/products/totalSold";
