@@ -12,6 +12,7 @@ class RegisterProvider extends ChangeNotifier {
   File? taxCardFile;
   File? commercialRegisterFile;
   File? marketImageFile;
+  
 
   bool get isLoading => _isLoading;
 

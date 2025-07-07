@@ -205,7 +205,7 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                     const SizedBox(
                       height: 14,
-                    ),
+                    ),      
                     const Text(
                       'إعادة كتابة كلمة المرور ',
                       style: TextStyle(

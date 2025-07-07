@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ProductItemCard extends StatelessWidget {
   final Product product;
   final int quantity;
-  final Function(int) onQuantityChanged;
+  final ValueChanged<int> onQuantityChanged;
   final VoidCallback? onAddToCart;
 
   const ProductItemCard({
@@ -16,6 +16,129 @@ class ProductItemCard extends StatelessWidget {
     required this.onQuantityChanged,
     this.onAddToCart,
   });
+
+  bool _isValidImage(String? url) {
+    if (url == null || url.isEmpty) return false;
+    if (url == 'https://erp.khedrsons.com/uploads/img/1745829725_%D9%81%D8%B1%D9%8A%D9%85.png') return false;
+    if (url.toLowerCase().endsWith('فريم.png')) return false;
+    return true;
+  }
+
+  Widget _buildProductDetails() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          product.productName ?? '',
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            fontFamily: baseFont,
+            color: Colors.black87,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'السعــر: ${product.price} ج.م',
+          style: TextStyle(
+            fontSize: 18.sp,
+            color: Colors.orange[700],
+            fontFamily: baseFont,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: 8.h),
+        Text(
+          'الكمية: $quantity',
+          style: TextStyle(
+            fontSize: 18.sp,
+            color: Colors.black87,
+            fontFamily: baseFont,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProductImage() {
+    return Container(
+      width: 100.w,
+      height: 80.h,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.orange.withOpacity(0.2)),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: _isValidImage(product.imageUrl)
+            ? Image.network(
+                product.imageUrl!,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.asset('assets/images/logoPng.png', fit: BoxFit.contain);
+                },
+              )
+            : Image.asset('assets/images/logoPng.png', fit: BoxFit.contain),
+      ),
+    );
+  }
+
+  Widget _buildQuantityControl() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.orange.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            icon: Icon(Icons.remove, color: Colors.orange[700], size: 20),
+            onPressed: () => onQuantityChanged(quantity > 0 ? quantity - 1 : 0),
+            padding: const EdgeInsets.all(4),
+          ),
+          Text(
+            '$quantity',
+            style: TextStyle(
+              color: Colors.orange[700],
+              fontWeight: FontWeight.bold,
+              fontFamily: baseFont,
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.add, color: Colors.orange[700], size: 20),
+            onPressed: () => onQuantityChanged(quantity + 1),
+            padding: const EdgeInsets.all(4),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAddToCartButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.orange,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+        onPressed: onAddToCart,
+        child: const Text(
+          'إضافة إلى السلة',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            fontFamily: baseFont,
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,128 +163,22 @@ class ProductItemCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Product Details (Left Side)
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            product.productName ?? '',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: baseFont,
-                              color: Colors.black87,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'السعــر: ${product.price} ج.م',
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              color: Colors.orange[700],
-                              fontFamily: baseFont,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                         SizedBox(height: 8.h),
-                          Text(
-                            'الكمية: $quantity',
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              color: Colors.black87,
-                              fontFamily: baseFont,
-                            ),
-                          ),
-                          
-                        ],
-                      ),
-                    ),
+                    Expanded(child: _buildProductDetails()),
                     const SizedBox(width: 12),
-                    // Product Image (Right Side)
+                    // Product Image and Quantity Control (Right Side)
                     Column(
                       children: [
-                        Container(
-                          width: 100.w,
-                          height: 80.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.orange.withOpacity(0.2)),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: (product.imageUrl != null &&
-                                    product.imageUrl!.isNotEmpty &&
-                                    product.imageUrl! != 'https://erp.khedrsons.com/uploads/img/1745829725_%D9%81%D8%B1%D9%8A%D9%85.png' &&
-                                    !product.imageUrl!.toLowerCase().endsWith('فريم.png'))
-                                ? Image.network(
-                                    product.imageUrl!,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Image.asset('assets/images/logoPng.png', fit: BoxFit.contain);
-                                    },
-                                  )
-                                : Image.asset('assets/images/logoPng.png', fit: BoxFit.contain),
-                          ),
-                        ),
-                       SizedBox(height: 28.h),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.orange.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.remove, color: Colors.orange[700], size: 20),
-                                onPressed: () => onQuantityChanged(quantity > 0 ? quantity - 1 : 0),
-                                padding: const EdgeInsets.all(4),
-                              ),
-                              Text(
-                                '$quantity',
-                                style: TextStyle(
-                                  color: Colors.orange[700],
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: baseFont,
-                                ),
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.add, color: Colors.orange[700], size: 20),
-                                onPressed: () => onQuantityChanged(quantity + 1),
-                                padding: const EdgeInsets.all(4),
-                              ),
-                            ],
-                          ),
-                        ),
+                        _buildProductImage(),
+                        SizedBox(height: 28.h),
+                        _buildQuantityControl(),
                       ],
                     ),
                   ],
                 ),
               ),
-               SizedBox(height: 8.h),
+              SizedBox(height: 8.h),
               // Add to Cart Button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  onPressed: onAddToCart,
-                  child: const Text(
-                    'إضافة إلى السلة',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: baseFont,
-                    ),
-                  ),
-                ),
-              ),
+              _buildAddToCartButton(),
             ],
           ),
         ),

@@ -236,6 +236,7 @@ class _ReservationPageState extends State<ReservationPage> {
                                         _addressController.text.trim(),
                                     "supplier_business_name":
                                         _marketNameController.text.trim(),
+                                        
                                   });
                                   if (registerProvider.message != null) {
                                     GoRouter.of(context)

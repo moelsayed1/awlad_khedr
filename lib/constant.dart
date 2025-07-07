@@ -23,5 +23,15 @@ class APIConstant {
   static const GET_ALL_PRODUCTS_BY_CATEGORY = "$BASE_URL/api/category/products";
   static const GET_TOP_RATED_ITEMS = "$BASE_URL/api/products/totalSold";
   static const GET_BANNERS = "$BASE_URL/api/banners";
+  static const GET_ALL_CATEGORIES = "$BASE_URL/api/categories";
+  static const GET_ALL_SUBCATEGORIES = "$BASE_URL/api/category/subcategories";
+  static const GET_ALL_ORDERS = "$BASE_URL/api/sells/orders";
+  static const GET_ALL_TRANSACTIONS = "$BASE_URL/api/sells/transactions";
+  static const STORE_SELL = "$BASE_URL/api/sells/store";
+  static const GET_ORDER = "$BASE_URL/api/orders"; // Usage: /api/orders/{id}
+  static const GET_ORDER_INVOICE = "$BASE_URL/api/order-invoice"; // Usage: /api/order-invoice/{id}
+  static const GET_TRANSACTION_INVOICE = "$BASE_URL/api/transaction-invoice"; // Usage: /api/transaction-invoice/{id}
+  static const GET_CART = "$BASE_URL/api/cart";
+  
   // static final GET_ALL_SUBCATEGORY = "$BASE_URL/api/category/subcategories/";
 }
