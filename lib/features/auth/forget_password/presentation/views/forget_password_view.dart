@@ -35,7 +35,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 backgroundColor: Colors.transparent,
                 leading: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Container(
+                  child: SizedBox(
                     width: 40.11,
                     height: 40.11,
                     child: Stack(
@@ -71,7 +71,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     const SizedBox(height: 16),
-                    Text(
+                    const Text(
                       'استعادة كلمة المرور',
                       style: TextStyle(
                         fontSize: 20,
@@ -81,7 +81,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text(
+                    const Text(
                       'الرجاء إدخال البريد الالكتورني لإعادة تعيين كلمة المرور',
                       style: TextStyle(
                         fontSize: 14,

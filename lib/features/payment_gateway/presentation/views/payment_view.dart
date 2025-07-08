@@ -163,7 +163,7 @@ class PaymentView extends StatelessWidget {
                   );
                   orderProvider.addOrder(order);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text('تم إرسال الطلب بنجاح!'),
                       backgroundColor: Colors.green,
                     ),

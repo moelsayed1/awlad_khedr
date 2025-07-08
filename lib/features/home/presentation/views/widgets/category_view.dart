@@ -170,7 +170,7 @@ class _CategoriesViewState extends State<_CategoriesView> {
                     separatorBuilder: (context, index) => const SizedBox(height: 15),
                     itemBuilder: (context, index) {
                       final product = controller.filteredProducts[index];
-                      final String quantityKey = product.productId?.toString() ?? product.productName ?? 'product_${index}';
+                      final String quantityKey = product.productId?.toString() ?? product.productName ?? 'product_$index';
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Column(

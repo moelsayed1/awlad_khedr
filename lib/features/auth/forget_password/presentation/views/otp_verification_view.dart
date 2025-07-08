@@ -16,7 +16,7 @@ class VerificationScreen extends StatelessWidget {
           backgroundColor: Colors.transparent,
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Container(
+            child: SizedBox(
               width: 40.11,
               height: 40.11,
               child: Stack(
@@ -55,7 +55,7 @@ class VerificationScreen extends StatelessWidget {
 
               const SizedBox(height: 16),
               // Title
-              Text(
+              const Text(
                 'التحقق من رقم الهاتف الخاص بك',
                 style: TextStyle(
                   fontSize: 18,
@@ -67,7 +67,7 @@ class VerificationScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               // Subtitle
-              Text(
+              const Text(
                 'لقد تم إرسال رسالة تحتوي على رمز تحقق، الرجاء تحقق من ذلك لاستكمال استعادة كلمة المرور',
                 style: TextStyle(
                   fontSize: 14,

@@ -226,7 +226,7 @@ class _CartViewPageState extends State<CartViewPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => OrdersViewPage(),
+                          builder: (_) => const OrdersViewPage(),
                         ),
                       );
                     },

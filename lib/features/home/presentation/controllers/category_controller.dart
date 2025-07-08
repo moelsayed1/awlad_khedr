@@ -105,7 +105,7 @@ class CategoryController extends ChangeNotifier {
   }
 
   Future<void> fetchProductsByCategory() async {
-    if (selectedCategory == null || selectedCategory.isEmpty) {
+    if (selectedCategory.isEmpty) {
       log('No category selected');
       return;
     }
@@ -115,7 +115,7 @@ class CategoryController extends ChangeNotifier {
     
     try {
       final products = await _repository.fetchProductsByCategory(selectedCategory);
-      if (products != null && products.isNotEmpty) {
+      if (products.isNotEmpty) {
         topRatedItem = TopRatedModel(products: products);
         _updateProductQuantities(products);
         filteredProducts = products; // Set filtered products directly first

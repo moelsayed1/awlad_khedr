@@ -1,10 +1,11 @@
+import 'dart:developer';
+
 import 'package:awlad_khedr/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/assets.dart';
 import 'package:awlad_khedr/features/invoice/data/invoice_service.dart';
 import 'dart:convert';
-import 'dart:developer';
 import 'package:http/http.dart' as http;
 
 /// Helper function to extract userId from JWT token
@@ -14,13 +15,88 @@ String? extractUserIdFromToken(String token) {
     if (parts.length != 3) return null;
     final payload = utf8.decode(base64Url.decode(base64Url.normalize(parts[1])));
     final payloadMap = json.decode(payload);
-    return payloadMap['sub']?.toString();
+    final userId = payloadMap['sub']?.toString();
+    debugPrint('[log] Extracted userId from token: $userId');
+    return userId;
   } catch (e) {
+    debugPrint('[log] Exception in extractUserIdFromToken: $e');
     return null;
   }
 }
 
-// ignore: must_be_immutable
+/// Logic class to handle cart/order operations
+class CartOrderLogic {
+  final List<dynamic> products;
+  final List<int> quantities;
+  final double count;
+
+  CartOrderLogic({
+    required this.products,
+    required this.quantities,
+    required this.count,
+  });
+
+  Future<bool> addProductsToCart(String? token) async {
+    debugPrint('Starting addProductsToCart');
+    for (int i = 0; i < products.length; i++) {
+      final product = products[i];
+      final quantity = quantities[i];
+      final price = product.price.toString();
+      final requestBody = {
+        "product_id": product.productId.toString(),
+        "product_quantity": quantity.toString(),
+        "price": price,
+      };
+      debugPrint('About to send add-to-cart request');
+      debugPrint('Add to cart request body: ${json.encode(requestBody)}');
+      try {
+        final cartResponse = await http.post(
+          Uri.parse(APIConstant.GET_CART),
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          },
+          body: json.encode(requestBody),
+        ).timeout(const Duration(seconds: 10));
+        debugPrint('Add to cart response status: ${cartResponse.statusCode}');
+        debugPrint('Add to cart response body: ${cartResponse.body}');
+        if (cartResponse.statusCode != 200 && cartResponse.statusCode != 201) {
+          return false;
+        }
+      } catch (e, stack) {
+        debugPrint('Exception during add to cart: $e');
+        debugPrint('Stack trace: $stack');
+        return false;
+      }
+    }
+    return true;
+  }
+
+  Future<Map<String, dynamic>?> storeOrder(String? token) async {
+    try {
+      final orderResponse = await http.post(
+        Uri.parse(APIConstant.STORE_SELL),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({}),
+      );
+      debugPrint('Store order response [ [33m${orderResponse.statusCode} [0m]: ${orderResponse.body}');
+      if (orderResponse.statusCode == 200 || orderResponse.statusCode == 201) {
+        final data = json.decode(orderResponse.body);
+        return data;
+      } else {
+        return null;
+      }
+    } catch (e, stack) {
+      debugPrint('Exception during store order: $e');
+      debugPrint('Stack trace: $stack');
+      return null;
+    }
+  }
+}
+
 class CustomButtonCart extends StatefulWidget {
   final List<dynamic> products;
   final List<int> quantities;
@@ -46,24 +122,22 @@ class _CustomButtonCartState extends State<CustomButtonCart> {
     return showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext context) {
-        return const AlertDialog(
-          content: Row(
-            children: [
-              CircularProgressIndicator(),
-              SizedBox(width: 20),
-              Text("جاري إرسال الطلب..."),
-            ],
-          ),
-        );
-      },
+      builder: (context) => const AlertDialog(
+        content: Row(
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 20),
+            Text("جاري إرسال الطلب..."),
+          ],
+        ),
+      ),
     );
   }
 
   Future<void> _showOrderSuccessDialog(String? invoiceNo) async {
     await showDialog<String>(
       context: context,
-      builder: (BuildContext context) => AlertDialog(
+      builder: (context) => AlertDialog(
         backgroundColor: Colors.white,
         title: Image.asset(
           AssetsData.bag,
@@ -74,10 +148,11 @@ class _CustomButtonCartState extends State<CustomButtonCart> {
           textAlign: TextAlign.center,
           'تم تأكيد طلبك بنجاح${invoiceNo != null ? "\nرقم الفاتورة: $invoiceNo" : ""}',
           style: TextStyle(
-              fontFamily: baseFont,
-              fontSize: 25.sp,
-              color: Colors.black,
-              fontWeight: FontWeight.w700),
+            fontFamily: baseFont,
+            fontSize: 25.sp,
+            color: Colors.black,
+            fontWeight: FontWeight.w700,
+          ),
         ),
       ),
     );
@@ -100,81 +175,62 @@ class _CustomButtonCartState extends State<CustomButtonCart> {
     );
   }
 
-  Future<bool> _addProductsToCart(String? token, String? userId) async {
-    bool cartSuccess = true;
-    for (int i = 0; i < widget.products.length; i++) {
-      final product = widget.products[i];
-      final quantity = widget.quantities[i];
-      final price = product.price.toString();
-      final totalPrice = (double.tryParse(price)! * quantity).toString();
-      final cartResponse = await http.post(
-        Uri.parse(APIConstant.GET_CART), // Should be ADD_TO_CART endpoint
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-        body: json.encode({
-          "user_id": userId,
-          "product_id": product.productId.toString(),
-          "product_quantity": quantity.toString(),
-          "price": price,
-          "total_price": totalPrice,
-        }),
-      );
-      log('Add to cart response [ [33m${cartResponse.statusCode} [0m]: ${cartResponse.body}');
-      if (cartResponse.statusCode != 200 && cartResponse.statusCode != 201) {
-        cartSuccess = false;
-        break;
-      }
-    }
-    return cartSuccess;
-  }
-
-  Future<void> _storeOrder(String? token) async {
-    final orderResponse = await http.post(
-      Uri.parse(APIConstant.STORE_SELL),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-      },
-      body: json.encode({}),
-    );
-    log('Store order response [ [33m${orderResponse.statusCode} [0m]: ${orderResponse.body}');
-    Navigator.of(context).pop(); // Close loading dialog
-    if (orderResponse.statusCode == 200 || orderResponse.statusCode == 201) {
-      final data = json.decode(orderResponse.body);
-      final invoiceNo = data["transaction"]?["invoice_no"];
-      await _showOrderSuccessDialog(invoiceNo);
-      widget.onOrderConfirmed();
-    } else {
-      _showSnackBar(
-        'حدث خطأ أثناء إرسال الطلب. حاول مرة أخرى.',
-        backgroundColor: darkOrange,
-        textColor: Colors.black,
-      );
-    }
-  }
-
   Future<void> _handleOrder() async {
+    debugPrint('Order Now button pressed');
+    debugPrint('Starting _handleOrder');
+    if (_isLoading) return;
+    setState(() => _isLoading = true);
+
     if (widget.count < 3000) {
       _showSnackBar(
         'الحد الادني للاوردر 3000 جنيه لاستكمال الطلب',
         backgroundColor: darkOrange,
         textColor: Colors.black,
       );
+      setState(() => _isLoading = false);
+      return;
+    }
+    debugPrint('Passed minimum order check');
+    await _showLoadingDialog();
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    debugPrint('[DEBUG] قبل getToken');
+    final token = await InvoiceService.getToken();
+    debugPrint('[DEBUG] بعد getToken: $token');
+
+    if (token == null) {
+      Navigator.of(context).pop(); // اقفل الـ dialog
+      _showSnackBar('لم يتم العثور على التوكن. أعد تسجيل الدخول.', backgroundColor: Colors.red, textColor: Colors.white);
+      setState(() => _isLoading = false);
       return;
     }
 
-    await _showLoadingDialog();
+    String? userId = extractUserIdFromToken(token);
+    debugPrint('[log] Extracted userId from token: $userId');
+    debugPrint('Before calling addProductsToCart');
 
-    final token = await InvoiceService.getToken();
-    final userId = extractUserIdFromToken(token ?? '');
-    log('Extracted userId from token: $userId');
+    final logic = CartOrderLogic(
+      products: widget.products,
+      quantities: widget.quantities,
+      count: widget.count,
+    );
 
-    final cartSuccess = await _addProductsToCart(token, userId);
-
+    final cartSuccess = await logic.addProductsToCart(token);
+    debugPrint('Cart success: $cartSuccess');
     if (cartSuccess) {
-      await _storeOrder(token);
+      final orderData = await logic.storeOrder(token);
+      Navigator.of(context).pop(); // Close loading dialog
+      if (orderData != null) {
+        final invoiceNo = orderData["transaction"]?["invoice_no"];
+        await _showOrderSuccessDialog(invoiceNo);
+        widget.onOrderConfirmed();
+      } else {
+        _showSnackBar(
+          'حدث خطأ أثناء إرسال الطلب. حاول مرة أخرى.',
+          backgroundColor: darkOrange,
+          textColor: Colors.black,
+        );
+      }
     } else {
       Navigator.of(context).pop(); // Close loading dialog
       _showSnackBar(
@@ -182,7 +238,10 @@ class _CustomButtonCartState extends State<CustomButtonCart> {
         backgroundColor: darkOrange,
         textColor: Colors.black,
       );
+      setState(() => _isLoading = false);
+      return;
     }
+    setState(() => _isLoading = false);
   }
 
   @override
@@ -195,142 +254,9 @@ class _CustomButtonCartState extends State<CustomButtonCart> {
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.all(mainColor),
           ),
-          onPressed: () async {
-            if (widget.count >= 3000) {
-              try {
-                // Show loading dialog
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return const AlertDialog(
-                      content: Row(
-                        children: [
-                          CircularProgressIndicator(),
-                          SizedBox(width: 20),
-                          Text("جاري إرسال الطلب..."),
-                        ],
-                      ),
-                    );
-                  },
-                );
-
-                final token = await InvoiceService.getToken();
-                final userId = extractUserIdFromToken(token ?? '');
-                log('Extracted userId from token: $userId');
-
-                bool cartSuccess = true;
-                for (int i = 0; i < widget.products.length; i++) {
-                  final product = widget.products[i];
-                  final quantity = widget.quantities[i];
-                  final price = product.price.toString();
-                  final totalPrice = (double.tryParse(price)! * quantity).toString();
-                  final cartResponse = await http.post(
-                    Uri.parse(APIConstant.GET_CART), // Should be ADD_TO_CART endpoint
-                    headers: {
-                      'Authorization': 'Bearer $token',
-                      'Content-Type': 'application/json',
-                    },
-                    body: json.encode({
-                      "user_id": userId,
-                      "product_id": product.productId.toString(),
-                      "product_quantity": quantity.toString(),
-                      "price": price,
-                      "total_price": totalPrice,
-                    }),
-                  );
-                  log('Add to cart response [ [33m${cartResponse.statusCode} [0m]: ${cartResponse.body}');
-                  if (cartResponse.statusCode != 200 && cartResponse.statusCode != 201) {
-                    cartSuccess = false;
-                    break;
-                  }
-                }
-
-                if (cartSuccess) {
-                  // Now store the order
-                  final orderResponse = await http.post(
-                    Uri.parse(APIConstant.STORE_SELL),
-                    headers: {
-                      'Authorization': 'Bearer $token',
-                      'Content-Type': 'application/json',
-                    },
-                    body: json.encode({}), // If API expects empty body
-                  );
-                  log('Store order response [ [33m${orderResponse.statusCode} [0m]: ${orderResponse.body}');
-                  Navigator.of(context).pop(); // Close loading dialog
-                  if (orderResponse.statusCode == 200 || orderResponse.statusCode == 201) {
-                    final data = json.decode(orderResponse.body);
-                    final invoiceNo = data["transaction"]?["invoice_no"];
-                    await showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        backgroundColor: Colors.white,
-                        title: Image.asset(
-                          AssetsData.bag,
-                          width: 100,
-                          height: 100,
-                        ),
-                        content: Text(
-                          textAlign: TextAlign.center,
-                          'تم تأكيد طلبك بنجاح${invoiceNo != null ? "\nرقم الفاتورة: $invoiceNo" : ""}',
-                          style: TextStyle(
-                              fontFamily: baseFont,
-                              fontSize: 25.sp,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                    );
-                    widget.onOrderConfirmed();
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        backgroundColor: darkOrange,
-                        content: Text(
-                          textAlign: TextAlign.center,
-                          'حدث خطأ أثناء إرسال الطلب. حاول مرة أخرى.',
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                    );
-                  }
-                } else {
-                  Navigator.of(context).pop(); // Close loading dialog
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      backgroundColor: darkOrange,
-                      content: Text(
-                        textAlign: TextAlign.center,
-                        'حدث خطأ أثناء إضافة المنتجات للسلة. حاول مرة أخرى.',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w700),
-                      ),
-                    ),
-                  );
-                }
-              } catch (e, stack) {
-                Navigator.of(context).pop(); // Close loading dialog if open
-                log('Exception during order: $e\n$stack');
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    backgroundColor: darkOrange,
-                    content: Text(
-                      textAlign: TextAlign.center,
-                      'حدث خطأ غير متوقع أثناء إرسال الطلب.',
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                );
-              }
-            } else {
-              _showSnackBar(
-                'الحد الادني للاوردر 3000 جنيه لاستكمال الطلب',
-                backgroundColor: darkOrange,
-                textColor: Colors.black,
-              );
-            }
+          onPressed: () {
+            log('addProductsToCart: ${CartOrderLogic(products: widget.products, quantities: widget.quantities, count: widget.count).addProductsToCart}');
+            log('storeOrder: ${CartOrderLogic(products: widget.products, quantities: widget.quantities, count: widget.count).storeOrder}');
           },
           child: _isLoading
               ? const SizedBox(
@@ -344,10 +270,11 @@ class _CustomButtonCartState extends State<CustomButtonCart> {
               : const Text(
                   'اطلب الان',
                   style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: baseFont),
+                    color: Color.fromARGB(255, 211, 160, 160),
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: baseFont,
+                  ),
                 ),
         ),
       ),
