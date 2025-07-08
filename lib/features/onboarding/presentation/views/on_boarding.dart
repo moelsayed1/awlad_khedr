@@ -28,16 +28,16 @@ class OnBoardingPage extends StatelessWidget {
               child: Center(
                   child: Column(children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 50.0.h),
+                  padding: EdgeInsets.symmetric(vertical: 100.0.h),
                   child: Image.asset(
                     AssetsData.logoPng,
                     width: 106.w,
                     height: 116.h,
                   ),
                 ),
-                 SizedBox(
-                  height: 140.h,
-                ),
+                //  SizedBox(
+                //   height: 30.h,
+                // ),
                  Center(
                   child: Text(
                     'أبدأ معنا تجارتك الأن',

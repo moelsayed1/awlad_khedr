@@ -2,7 +2,7 @@ import 'package:awlad_khedr/constant.dart';
 import 'package:awlad_khedr/core/main_layout.dart';
 import 'package:awlad_khedr/features/cart/presentation/views/widgets/cart_item.dart';
 import 'package:awlad_khedr/features/cart/presentation/views/widgets/custom_button_cart.dart';
-import 'package:awlad_khedr/features/payment_gateway/presentation/views/payment_view.dart';
+import 'package:awlad_khedr/features/order/presentation/views/orders_view.dart';
 import 'package:flutter/material.dart';
 import 'package:awlad_khedr/features/most_requested/data/model/top_rated_model.dart' as top_rated;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -226,13 +226,12 @@ class _CartViewPageState extends State<CartViewPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => PaymentView(
-                            products: selectedProductsForPayment,
-                            total: _total,
-                          ),
+                          builder: (_) => const OrdersViewPage(),
                         ),
                       );
                     },
+                    products: selectedProducts,
+                    quantities: selectedQuantities,
                   ),
                 ],
               ),

@@ -43,7 +43,7 @@ class _LoginViewState extends State<LoginView> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     const SizedBox(height: 100), // Space at the top
                     // InkWell(
@@ -68,16 +68,14 @@ class _LoginViewState extends State<LoginView> {
                     //   ),
                     // ),
                     const SizedBox(height: 30),
-                    const Center(
-                      child: Text(
-                        'مرحباً بك\nقم بتسجيل دخولك',
-                        textDirection: TextDirection.rtl,
-                        style: TextStyle(
-                          fontSize: 38,
-                          color: Colors.black,
-                          fontFamily: baseFont,
-                          fontWeight: FontWeight.w700,
-                        ),
+                    const Text(
+                      'مرحباً بك\nقم بتسجيل دخولك',
+                      textDirection: TextDirection.rtl,
+                      style: TextStyle(
+                        fontSize: 38,
+                        color: Colors.black,
+                        fontFamily: baseFont,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                     const Divider(
@@ -186,13 +184,15 @@ class _LoginViewState extends State<LoginView> {
                       onTap: () {
                         GoRouter.of(context).push(AppRouter.kRegisterView);
                       },
-                      child:const Text(
-                        'تسجيل حساب جديد',
-                        style: TextStyle(
-                            fontFamily: baseFont,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black),
+                      child:const Center(
+                        child: Text(
+                          'تسجيل حساب جديد',
+                          style: TextStyle(
+                              fontFamily: baseFont,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
                       ),
                     ),
                   ],

@@ -16,7 +16,7 @@ class RegistrationService {
       var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
 
       request.fields.addAll(requestBody.map((key, value) => MapEntry(key, value.toString())));
-      request.fields['allow_mob'] = true.toString();
+      request.fields['allow_mob'] = '1';
 
       if (taxCardImage != null) {
         request.files.add(

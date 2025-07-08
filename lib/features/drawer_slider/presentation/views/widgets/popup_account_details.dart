@@ -1,6 +1,5 @@
 import 'package:awlad_khedr/constant.dart';
 import 'package:awlad_khedr/features/payment_gateway/presentation/views/payment_view.dart';
-import 'package:awlad_khedr/features/payment_gateway/presentation/views/widgets/payment_form.dart';
 import 'package:flutter/material.dart';
 
 class OrderDetailsButton extends StatelessWidget {

@@ -88,6 +88,9 @@ class _ProductScreenState extends State<ProductItemByCategory> {
                             ? Image.network(
                                 product.imageUrl!,
                                 fit: BoxFit.contain,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Icon(Icons.broken_image, size: 40, color: Colors.grey);
+                                },
                               )
                             : const Icon(Icons.image_not_supported),
                       ),

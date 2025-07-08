@@ -41,7 +41,11 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => NotificationProvider()),
-        ChangeNotifierProvider(create: (_) => LoginProvider()),
+        ChangeNotifierProvider(create: (_) {
+          final loginProvider = LoginProvider();
+          loginProvider.loadToken();
+          return loginProvider;
+        }),
         ChangeNotifierProvider(create: (_) => RegisterProvider()),
         ChangeNotifierProvider(create: (_) => OrderProvider()),
       ],
